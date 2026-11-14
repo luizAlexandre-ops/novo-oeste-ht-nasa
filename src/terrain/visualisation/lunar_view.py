@@ -4,9 +4,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import LightSource
 
-from terrain.analysis.terrain import TerrainMetrics, fill_missing_with_mean
-from terrain.datasets.lola import LolaWindow
-from graticule import draw_graticule
+from src.terrain.analysis.terrain import TerrainMetrics
+from src.terrain.analysis.terrain import fill_missing_with_mean
+from src.terrain.datasets.lola import LolaWindow
+from src.terrain.visualisation.graticule import draw_graticule
 
 
 def plot_lunar_target(

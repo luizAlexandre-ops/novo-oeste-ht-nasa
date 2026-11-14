@@ -16,7 +16,7 @@ if __name__ == "__main__":
     metrics = compute_terrain_metrics(window.elevation_meters, window.pixel_size_meters)
     plot_lunar_target(
         window, metrics, TARGET.name, TARGET.latitude,
-        parallel_step_degrees=0.1,  
+        parallel_step_degrees=0.3,  
         meridian_step_degrees=30,
         save_path=OUTPUT_DIRECTORY / f"{TARGET.name.lower()}.png",
     )

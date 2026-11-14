@@ -20,5 +20,5 @@ COPERNICUS_TILE_URL_TEMPLATE = (
     "https://copernicus-dem-30m.s3.amazonaws.com/{tile_name}/{tile_name}.tif"
 )
 
-DEFAULT_HALF_WIDTH_METERS = 20_000
+DEFAULT_HALF_WIDTH_METERS = 100_000
 DEFAULT_ROUGHNESS_WINDOW_METERS = 150.0
