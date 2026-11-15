@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from src.terrain.analysis.terrain import TerrainMetrics
-from src.terrain.datasets.lola import LolaWindow
+from src.terrain.datasets.raster import RasterWindow
 
 
 def plot_lunar_target(
-    window: LolaWindow,
+    window: RasterWindow,
     metrics: TerrainMetrics,
     target_name: str,
     save_path: Path | None = None,
@@ -18,8 +18,8 @@ def plot_lunar_target(
     """Plota a altura e a declividade da região lunar."""
 
     # Prepara os dados
-    elevation = np.ma.masked_invalid(window.elevation_meters)
-    extent = window.extent_km
+    elevation = np.ma.masked_invalid(window.data)
+    extent = window.extent
 
     # Cria os dois gráficos
     figure, axes = plt.subplots(1, 2, figsize=(14, 6))
@@ -57,8 +57,8 @@ def plot_lunar_target(
     axes[1].set_title(f"{target_name}: declividade")
 
     # Coordenadas do ponto de interesse
-    target_x = window.target_x_meters / 1000
-    target_y = window.target_y_meters / 1000
+    target_x = window.target_x / 1000
+    target_y = window.target_y / 1000
 
     # Marca o ponto de interesse nos dois gráficos
     for axis in axes:

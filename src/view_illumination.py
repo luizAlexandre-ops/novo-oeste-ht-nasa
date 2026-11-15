@@ -19,6 +19,7 @@ lua = CRS.from_proj4(
     "+proj=longlat +R=1737400 +no_defs"
 )
 
+
 with rasterio.open(caminho) as src:
 
     transformer = Transformer.from_crs(
