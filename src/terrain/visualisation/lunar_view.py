@@ -4,8 +4,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-from terrain.analysis.terrain import TerrainMetrics
-from terrain.datasets.lola import LolaWindow
+from src.terrain.analysis.terrain import TerrainMetrics
+from src.terrain.datasets.lola import LolaWindow
 
 
 def plot_lunar_target(

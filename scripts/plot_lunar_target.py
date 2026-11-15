@@ -10,13 +10,22 @@ TARGET = SHACKLETON_CRATER  # try HAWORTH_CRATER
 
 if __name__ == "__main__":
     OUTPUT_DIRECTORY.mkdir(exist_ok=True)
+
     window = crop_lola_window(
-        LOLA_LABEL_PATH, TARGET.latitude, TARGET.longitude, DEFAULT_HALF_WIDTH_METERS
+        LOLA_LABEL_PATH,
+        TARGET.latitude,
+        TARGET.longitude,
+        DEFAULT_HALF_WIDTH_METERS,
     )
-    metrics = compute_terrain_metrics(window.elevation_meters, window.pixel_size_meters)
+
+    metrics = compute_terrain_metrics(
+        window.elevation_meters,
+        window.pixel_size_meters,
+    )
+
     plot_lunar_target(
-        window, metrics, TARGET.name, TARGET.latitude,
-        parallel_step_degrees=0.1,  
-        meridian_step_degrees=30,
+        window,
+        metrics,
+        TARGET.name,
         save_path=OUTPUT_DIRECTORY / f"{TARGET.name.lower()}.png",
     )
