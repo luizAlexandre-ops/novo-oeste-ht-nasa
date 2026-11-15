@@ -6,6 +6,7 @@ import numpy as np
 
 from src.terrain.datasets.raster import RasterWindow
 from src.terrain.analysis.terrain import TerrainMetrics
+from src.terrain.site import Site
 
 
 def plot_lunar_comparason(
@@ -104,4 +105,29 @@ def plot_lunar_comparason(
     if show:
         plt.show()
 
+    return figure
+
+
+
+def plot_site(site: Site, save_path: Path | None = None, show: bool = True):
+    metrics = site.analysis.metrics
+    panels = [
+        ("Elevação (m)", site.analysis.elevation_meters, "terrain", {}),
+        ("Declividade (°)", metrics.slope_degrees, "magma", {"vmin": 0, "vmax": 40}),
+        ("Rugosidade (m)", metrics.roughness_meters, "viridis", {}),
+        ("Iluminação solar (%)", site.illumination_percent, "inferno", {"vmin": 0, "vmax": 100}),
+    ]
+    figure, axes = plt.subplots(1, 4, figsize=(20, 6))
+    for axis, (label, data, cmap, limits) in zip(axes, panels):
+        image = axis.imshow(data, extent=site.extent_km, origin="upper", cmap=cmap, **limits)
+        figure.colorbar(image, ax=axis, label=label, shrink=0.8)
+        axis.scatter(0, 0, color="cyan", marker="+", s=100)
+        axis.set_title(f"{site.name}: {label}")
+        axis.set_xlabel("X (km)")
+        axis.set_ylabel("Y (km)")
+    figure.tight_layout()
+    if save_path is not None:
+        figure.savefig(save_path, dpi=150, bbox_inches="tight")
+    if show:
+        plt.show()
     return figure

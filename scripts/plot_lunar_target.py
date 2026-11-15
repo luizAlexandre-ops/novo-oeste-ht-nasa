@@ -5,9 +5,9 @@ from pyproj import CRS
 from scripts.plot_lunar_comparason import plot_lunar_comparason
 from src.terrain.analysis.terrain import compute_terrain_metrics
 from src.terrain.config import (
-    DEFAULT_HALF_WIDTH_METERS, LOLA_ELEVATION_SCALE_FACTOR, LOLA_LABEL_PATH, MOON_RADIUS_METERS, OUTPUT_DIRECTORY, AVGVISIB_PATH,
+    DEFAULT_HALF_WIDTH_METERS, LOLA_LABEL_PATH, MOON_RADIUS_METERS, OUTPUT_DIRECTORY, AVGVISIB_PATH,
 )
-from src.terrain.datasets.lola import crop_lola_window
+from src.terrain.datasets.lola import crop_lola_window, lola_elevation_meters
 from src.terrain.datasets.raster import crop_raster_window
 from src.terrain.locations import HAWORTH_CRATER, SHACKLETON_CRATER
 from src.terrain.visualisation.lunar_view import plot_lunar_target
@@ -30,8 +30,7 @@ if __name__ == "__main__":
     )
 
     elevation = (
-        elevation_window.data.astype("float32")
-        * LOLA_ELEVATION_SCALE_FACTOR
+        lola_elevation_meters(elevation_window)
     )
 
         # Extrai iluminação

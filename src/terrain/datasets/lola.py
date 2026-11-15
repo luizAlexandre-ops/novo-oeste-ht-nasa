@@ -1,9 +1,10 @@
 from pathlib import Path
+import numpy as np
 
 from pyproj import CRS
 
 from src.terrain.config import MOON_RADIUS_METERS
-from src.terrain.datasets.raster import crop_raster_window
+from src.terrain.datasets.raster import RasterWindow, crop_raster_window
 
 
 def crop_lola_window(
@@ -23,3 +24,9 @@ def crop_lola_window(
         half_width=half_width_meters,
         coordinate_crs=moon_crs,
     )
+
+
+def lola_elevation_meters(window: RasterWindow) -> np.ndarray:
+    """Altura em metros relativa à esfera de 1737,4 km. HEIGHT = DN * SCALING_FACTOR."""
+    return np.ma.filled(window.scaled_values, np.nan)
+

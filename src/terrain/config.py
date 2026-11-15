@@ -15,7 +15,6 @@ LOLA_DATASET_NAME = "ldem_75s_120m"
 LOLA_LABEL_PATH = DATA_DIRECTORY / f"{LOLA_DATASET_NAME}.lbl"
 AVGVISIB_PATH = DATA_DIRECTORY / "AVGVISIB_85S_060M_201608.TIF"
 # elevation_meters = raw_value * scale (SCALING_FACTOR from the .LBL file)
-LOLA_ELEVATION_SCALE_FACTOR = 0.5
 
 COPERNICUS_TILE_URL_TEMPLATE = (
     "https://copernicus-dem-30m.s3.amazonaws.com/{tile_name}/{tile_name}.tif"

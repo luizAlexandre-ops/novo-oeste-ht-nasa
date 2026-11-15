@@ -7,7 +7,11 @@ import rasterio
 
 from affine import Affine
 from pyproj import CRS, Transformer
-from rasterio.windows import Window
+from rasterio.windows import Window, from_bounds
+from rasterio.enums import Resampling
+
+
+
 
 
 @dataclass(frozen=True)
@@ -37,6 +41,11 @@ class RasterWindow:
         right, bottom = self.transform * (columns, rows)
 
         return [left, right, bottom, top]
+
+    @property
+    def scaled_values(self) -> np.ma.MaskedArray:
+        """DN * scale, sem somar o offset (o offset do LOLA é o raio de referência)."""
+        return self.data.astype("float64") * self.scale
 
 
 def crop_raster_window(
@@ -106,3 +115,25 @@ def crop_raster_window(
         scale=scale,
         offset=offset,
     )
+
+
+def read_on_grid(
+    raster_path: Path,
+    bounds: tuple[float, float, float, float],  # left, bottom, right, top
+    shape: tuple[int, int],
+    band: int = 1,
+    resampling: Resampling = Resampling.average,
+) -> np.ma.MaskedArray:
+    """Lê `bounds` já reamostrado para `shape`, em unidade física (DN * scale)."""
+    with rasterio.open(raster_path) as dataset:
+        window = from_bounds(*bounds, transform=dataset.transform)
+        data = dataset.read(
+            band,
+            window=window,
+            out_shape=shape,
+            resampling=resampling,
+            masked=True,
+            boundless=True,  # fora da cobertura vira máscara, não erro
+        )
+        scale = dataset.scales[band - 1]
+    return data.astype("float64") * scale

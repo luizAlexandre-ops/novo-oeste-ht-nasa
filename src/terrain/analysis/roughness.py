@@ -20,7 +20,7 @@ def baseline_to_lag(
     """Converte a linha de base em metros para o deslocamento em pixels."""
     return int(round(baseline_meters / pixel_size_meters))
 
-def _diferencional_differences(
+def _directional_differences(
         elevation_meters: np.ndarray, lag_pixels: int
         ) -> tuple[np.ndarray, np.ndarray]:
     """Calcula as diferenças diferenciais para um determinado deslocamento (lag)."""
@@ -39,7 +39,7 @@ def rms_deviation(
     inclinação regional (um plano inclinado passa a ter rugosidade ~0).
     """
     squared_sum, count = 0.0, 0
-    for differences in _diferencional_differences(elevation_meters, lag_pixels):
+    for differences in _directional_differences(elevation_meters, lag_pixels):
         values = differences[np.isfinite(differences)]
         if values.size == 0:
             continue
@@ -112,10 +112,10 @@ def rms_deviation_map(
     """
     lag = baseline_to_lag(baseline_meters, pixel_size_meters)
     window_pixels = max(3, int(round(window_meters / pixel_size_meters)) | 1)
-    if window_pixels < 3:
+    if window_pixels < lag:
         raise ValueError("Janela muito pequena para o tamanho do pixel.")
 
-    differences_x, differences_y = _diferencional_differences(elevation_meters, lag)
+    differences_x, differences_y = _directional_differences(elevation_meters, lag)
 
     def to_full_grid(differences: np.ndarray, axis: int) -> np.ndarray:
         """Expande as diferenças para o tamanho original, preenchendo com NaN."""
@@ -135,5 +135,5 @@ def rms_deviation_map(
         variances.append(np.maximum(mean_squared - mean_difference**2, 0))
     
     roughness = np.sqrt(np.nanmean(np.stack(variances), axis = 0))
-    roughness[np.isfinite(elevation_meters)] = np.nan
+    roughness[~np.isfinite(elevation_meters)] = np.nan
     return roughness
