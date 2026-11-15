@@ -121,14 +121,14 @@ sites = [build_lunar_site(SHACKLETON_CRATER), build_lunar_site(HAWORTH_CRATER)]
 sites += [build_earth_site(location) for location in EARTH_ANALOG_SITES]
 signatures = [build_signature(site) for site in sites]
 
-# # print(f"{'métrica':28s}" + "".join(f"{s.name[:13]:>15s}" for s in signatures))
-# # for key in signatures[0].scalars:
-# #     row = "".join(f"{s.scalars.get(key, float('nan')):15.3f}" for s in signatures)
-# #     print(f"{key:28s}{row}")
+print(f"{'métrica':28s}" + "".join(f"{s.name[:13]:>15s}" for s in signatures))
+for key in signatures[0].scalars:
+    row = "".join(f"{s.scalars.get(key, float('nan')):15.3f}" for s in signatures)
+    print(f"{key:28s}{row}")
 
-# # print()
-# # for s in signatures[1:]:
-# #     print(f"declive: Shackleton x {s.name:25s} {slope_distance(signatures[0], s):.2f}")
+print()
+for s in signatures[1:]:
+    print(f"declive: Shackleton x {s.name:25s} {slope_distance(signatures[0], s):.2f}")
 
 
 # import matplotlib.pyplot as plt
