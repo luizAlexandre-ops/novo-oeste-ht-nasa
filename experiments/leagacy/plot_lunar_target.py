@@ -2,7 +2,7 @@ from zipfile import Path
 
 from pyproj import CRS
 
-from scripts.plot_lunar_comparason import plot_lunar_comparason
+from experiments.leagacy.plot_lunar_comparason import plot_lunar_comparason
 from src.terrain.analysis.terrain import compute_terrain_metrics
 from src.terrain.config import (
     DEFAULT_HALF_WIDTH_METERS, LOLA_LABEL_PATH, MOON_RADIUS_METERS, OUTPUT_DIRECTORY, AVGVISIB_PATH,

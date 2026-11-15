@@ -15,16 +15,16 @@ def plot_lunar_target(
     save_path: Path | None = None,
     show: bool = True,
 ):
-    """Plota a altura e a declividade da região lunar."""
+    """Plot lunar elevation and slope for the selected region."""
 
-    # Prepara os dados
+    # Prepare input values
     elevation = np.ma.masked_invalid(window.data)
     extent = window.extent
 
-    # Cria os dois gráficos
+    # Create two map panels
     figure, axes = plt.subplots(1, 2, figsize=(14, 6))
 
-    # Gráfico 1: Altura do terreno
+    # Panel 1: terrain elevation
     elevation_image = axes[0].imshow(
         elevation,
         extent=extent,
@@ -34,12 +34,12 @@ def plot_lunar_target(
     figure.colorbar(
         elevation_image,
         ax=axes[0],
-        label="Altura (m)",
+        label="Elevation (m)",
     )
 
     axes[0].set_title(f"{target_name}: altura")
 
-    # Gráfico 2: Declividade do terreno
+    # Panel 2: terrain slope
     slope_image = axes[1].imshow(
         metrics.slope_degrees,
         extent=extent,
@@ -51,16 +51,16 @@ def plot_lunar_target(
     figure.colorbar(
         slope_image,
         ax=axes[1],
-        label="Declividade (°)",
+        label="Slope (°)",
     )
 
     axes[1].set_title(f"{target_name}: declividade")
 
-    # Coordenadas do ponto de interesse
+    # Target coordinates
     target_x = window.target_x / 1000
     target_y = window.target_y / 1000
 
-    # Marca o ponto de interesse nos dois gráficos
+    # Mark the target on both panels
     for axis in axes:
         axis.plot(target_x, target_y, "r+", ms=16, mew=2)
 
@@ -73,20 +73,20 @@ def plot_lunar_target(
             fontweight="bold",
         )
 
-        axis.set_xlabel("X (km) a partir do polo")
-        axis.set_ylabel("Y (km) a partir do polo")
+        axis.set_xlabel("X (km) from pole")
+        axis.set_ylabel("Y (km) from pole")
 
         axis.set_xlim(extent[0], extent[1])
         axis.set_ylim(extent[2], extent[3])
 
-    # Ajusta o espaçamento entre os gráficos
+    # Adjust panel spacing
     figure.tight_layout()
 
-    # Salva a imagem, caso um caminho tenha sido informado
+    # Save the figure if a destination was provided
     if save_path is not None:
         figure.savefig(save_path, dpi=150, bbox_inches="tight")
 
-    # Exibe os gráficos
+    # Display panels when requested
     if show:
         plt.show()
 

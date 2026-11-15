@@ -7,7 +7,7 @@ from src.terrain.config import DEFAULT_BASELINES_METERS, MIN_RMS_METERS
 
 @dataclass
 class RoughnessProfile:
-    """Perfil de rugosidade do terreno."""
+    """Terrain roughness profile."""
 
     baseline_meters: np.ndarray
     rms_deviation_meters: np.ndarray
@@ -17,13 +17,13 @@ def baseline_to_lag(
         baseline_meters: float, 
         pixel_size_meters: float
     ) -> int:
-    """Converte a linha de base em metros para o deslocamento em pixels."""
+    """Convert spatial baseline from metres to pixel displacement."""
     return int(round(baseline_meters / pixel_size_meters))
 
 def _directional_differences(
         elevation_meters: np.ndarray, lag_pixels: int
         ) -> tuple[np.ndarray, np.ndarray]:
-    """Calcula as diferenças diferenciais para um determinado deslocamento (lag)."""
+    """Calculate directional elevation differences at the given pixel lag."""
     difference_x = elevation_meters[:, lag_pixels:] - elevation_meters[:, :-lag_pixels]
     difference_y = elevation_meters[lag_pixels:, :] - elevation_meters[:-lag_pixels, :]
     return difference_x, difference_y
@@ -33,10 +33,10 @@ def rms_deviation(
         lag_pixels: int,
         detrend: bool = True,
     ) -> float:
-    """RMS das diferenças de elevação entre pontos separados por `lag_pixels`.
+    """RMS of elevation differences between points separated by `lag_pixels`.
 
-    Com detrend=True, subtrai a diferença média em cada direção, removendo a
-    inclinação regional (um plano inclinado passa a ter rugosidade ~0).
+    With detrending, subtract the mean difference in each direction to remove
+    broad regional slope (an ideal inclined plane has near-zero roughness).
     """
     squared_sum, count = 0.0, 0
     for differences in _directional_differences(elevation_meters, lag_pixels):
@@ -59,7 +59,7 @@ def compute_roughness_profile(
         baselines_meters: tuple[float, ...] = DEFAULT_BASELINES_METERS,
         detrend: bool = True,
     ) -> RoughnessProfile:
-    """RMS deviation para vários baselines + expoente de Hurst (ν ∝ L^H)."""
+    """RMS deviation at several baselines and Hurst exponent (RMS ∝ L^H)."""
     max_lag = min(elevation_meters.shape) // 2
 
     used_baselines, used_values = [], []
@@ -105,10 +105,10 @@ def rms_deviation_map(
         baseline_meters: float,
         window_meters: float
 ) -> np.ndarray:
-    """Mapa local de RMS deviation (com inclinação local removida).
+    """Local RMS deviation map (local mean slope removed).
 
-    Em cada janela: variância das diferenças = E[d²] - E[d]², onde E[d] é a
-    inclinação média local. Calculado por direção e depois combinado.
+    Within each window: difference variance = E[d²] - E[d]², where E[d] is
+    the local mean directional difference. Combine both directions afterward.
     """
     lag = baseline_to_lag(baseline_meters, pixel_size_meters)
     window_pixels = max(3, int(round(window_meters / pixel_size_meters)) | 1)
@@ -118,7 +118,7 @@ def rms_deviation_map(
     differences_x, differences_y = _directional_differences(elevation_meters, lag)
 
     def to_full_grid(differences: np.ndarray, axis: int) -> np.ndarray:
-        """Expande as diferenças para o tamanho original, preenchendo com NaN."""
+        """Expand differences to the input shape, padding with NaN."""
         full = np.full(elevation_meters.shape, np.nan)
         if axis == 1:
             full[:, : differences.shape[1]] = differences
@@ -145,14 +145,14 @@ def compute_local_roughness_profile(
     baselines_meters: tuple[float, ...] = DEFAULT_BASELINES_METERS,
     window_factor: float = 4.0,
 ) -> RoughnessProfile:
-    """Mediana do RMS deviation local (inclinação removida por janela) para cada baseline.
-    A janela cresce com o baseline (window_factor x baseline) para sempre conter várias diferenças."""
+    """Median of locally detrended RMS deviation for each baseline.
+    The window scales with the baseline so it spans several point differences."""
     used_baselines, used_values = [], []
     for baseline in baselines_meters:
         lag = baseline_to_lag(baseline, pixel_size_meters)
         window_meters = window_factor * lag * pixel_size_meters
         if window_meters / pixel_size_meters > min(elevation_meters.shape) // 2:
-            continue  # janela grande demais para o recorte
+            continue  # Window would exceed the available crop
         local_map = rms_deviation_map(
             elevation_meters, pixel_size_meters, baseline, window_meters
         )

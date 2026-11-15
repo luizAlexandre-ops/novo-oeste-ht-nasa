@@ -14,7 +14,7 @@ _COLUMNS = ["clon", "clat", "temp_avg", "temp_max"]
 _COLSPECS = [(126, 141), (143, 158), (177, 185), (187, 195)]
 
 def load_diviner_table() -> dict[str, np.ndarray]:
-    """Lê a tabela uma vez e guarda um cache .npz (a leitura crua leva minutos)."""
+    """Load and cache the large Diviner table in an NPZ file."""
     if DIVINER_CACHE_PATH.exists():
         with np.load(DIVINER_CACHE_PATH) as cache:
             return {name: cache[name] for name in _COLUMNS}
@@ -38,7 +38,7 @@ def diviner_on_grid(
     crs,
     max_distance_meters: float = DIVINER_MAX_DISTANCE_METERS,
 ) -> dict[str, np.ndarray]:
-    """Temperaturas (K) na grade comum, pelo triângulo mais próximo de cada pixel."""
+    """Map temperature (K) to the target grid via nearest triangular cell."""
     table = load_diviner_table()
     moon = CRS.from_proj4(f"+proj=longlat +R={MOON_RADIUS_METERS} +no_defs")
     transformer = Transformer.from_crs(moon, crs, always_xy=True)
@@ -52,7 +52,7 @@ def diviner_on_grid(
         & (y > bottom - margin) & (y < top + margin)
     )
     if not near.any():
-        raise ValueError("Nenhum triângulo do Diviner perto desta região.")
+        raise ValueError("No Diviner triangles found near this region.")
     tree = cKDTree(np.column_stack([x[near], y[near]]))
 
     rows, columns = shape

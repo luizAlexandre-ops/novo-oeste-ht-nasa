@@ -47,7 +47,7 @@ for nome in arquivos_lua:
 
 
 # Iluminação lunar
- url_iluminacao_lua = (
+url_iluminacao_lua = (
     "https://pgda.gsfc.nasa.gov/data/MoonIllumination/"
     "AVGVISIB_85S_060M_201608.TIF"
 )

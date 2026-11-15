@@ -1,12 +1,13 @@
-import numpy as np
 from pathlib import Path
+
+import numpy as np
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIRECTORY = PROJECT_ROOT / "data"
 OUTPUT_DIRECTORY = PROJECT_ROOT / "outputs"
 
-# PSR_PATH = DATA_DIRECTORY / "LPSR_80S_20MPP_ADJ.TIF"
+COPERNICUS_CACHE_DIRECTORY = DATA_DIRECTORY / "cache" / "copernicus"
 DIVINER_TABLE_PATH = DATA_DIRECTORY / "dlre_prp_south.tab"
 DIVINER_CACHE_PATH = DATA_DIRECTORY / "diviner_south_cache.npz"
 DIVINER_MAX_DISTANCE_METERS = 400.0
@@ -23,7 +24,7 @@ LOLA_BASE_URL = (
     "lrolol_1xxx/data/lola_gdr/polar/img/"
 )
 
-# elevation_meters = raw_value * scale (SCALING_FACTOR from the .LBL file)
+# Elevation uses the SCALING_FACTOR specified in the detached PDS label.
 
 COPERNICUS_TILE_URL_TEMPLATE = (
     "https://copernicus-dem-30m.s3.amazonaws.com/{tile_name}/{tile_name}.tif"
@@ -41,9 +42,13 @@ ROUGHNESS_MAP_WINDOW_METERS = 1200.0
 LANDING_SLOPE_LIMITS_DEGREES = (5.0, 10.0)
 
 LIT_THRESHOLDS_PERCENT = (10.0, 20.0, 30.0)
-LANDABLE_LIT_THRESHOLD_PERCENT = 20.0       # usado na métrica combinada pouso + Sol
-SUNLIT_MAX_PSR_FRACTION = 0.1    
-              # abaixo disso o pixel conta como fora do PSR
+LANDABLE_LIT_THRESHOLD_PERCENT = 20.0  # Combined terrain and sunlight filter
+SUNLIT_MAX_PSR_FRACTION = 0.1  # Maximum PSR fraction for sunlit pixels
 SLOPE_HISTOGRAM_BINS = np.arange(0, 46, 1.0)
 
 MIN_RMS_METERS = 1e-6
+
+AVGVISIB_URL = (
+    "https://pgda.gsfc.nasa.gov/data/MoonIllumination/"
+    "AVGVISIB_85S_060M_201608.TIF"
+)

@@ -27,6 +27,6 @@ def crop_lola_window(
 
 
 def lola_elevation_meters(window: RasterWindow) -> np.ndarray:
-    """Altura em metros relativa à esfera de 1737,4 km. HEIGHT = DN * SCALING_FACTOR."""
+    """Height above the 1,737.4-km Moon reference sphere, DN times scale."""
     return np.ma.filled(window.scaled_values, np.nan)
 

@@ -2,7 +2,7 @@
 import numpy as np
 from pyproj import CRS, Transformer
 import rasterio
-from scripts.plot_lunar_comparason import plot_site
+from experiments.leagacy.plot_lunar_comparason import plot_site
 from src.terrain import site
 from src.terrain.analysis.roughness import compute_roughness_profile, rms_deviation_map
 from src.terrain.config import AVGVISIB_PATH, LOLA_LABEL_PATH, DATA_DIRECTORY

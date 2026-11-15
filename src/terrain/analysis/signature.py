@@ -8,7 +8,6 @@ from src.terrain.config import (
     LANDABLE_LIT_THRESHOLD_PERCENT,
     LANDING_SLOPE_LIMITS_DEGREES,
     LIT_THRESHOLDS_PERCENT,
-    LIT_THRESHOLDS_PERCENT,
     SLOPE_HISTOGRAM_BINS,
     SUNLIT_MAX_PSR_FRACTION,
 )
@@ -19,13 +18,13 @@ from src.terrain.site import Site
 class SiteSignature:
     name: str
     scalars: dict[str, float]
-    slope_histogram: np.ndarray          # normalizado, para Wasserstein
+    slope_histogram: np.ndarray          # Normalized histogram for Wasserstein
     roughness_baselines_m: np.ndarray
     roughness_rms_m: np.ndarray
 
 
 def largest_region_km2(mask: np.ndarray, pixel_size_m: float) -> float:
-    """Área da maior região contígua (conectividade 4) onde mask é True."""
+    """Area of the largest 4-connected True region, in square kilometres."""
     labeled, count = label(mask)
     if count == 0:
         return 0.0
@@ -53,7 +52,7 @@ def build_signature(site: Site) -> SiteSignature:
         "hurst": analysis.roughness_profile.hurst_exponent,
     }
 
-    # Iluminação só existe na Lua; na Terra o array é todo NaN e este bloco é pulado
+    # Only lunar sites provide illumination; Earth arrays are entirely NaN.
     illumination = site.illumination_percent
     lit_valid = np.isfinite(illumination)
     if lit_valid.any():
@@ -73,7 +72,7 @@ def build_signature(site: Site) -> SiteSignature:
                 site.pixel_size_meters,
             )
 
-    # clip para que declives acima do último bin entrem no último bin, em vez de sumir
+    # Clip extreme slopes into the final histogram bin.
     histogram, _ = np.histogram(
         np.clip(slopes, 0, SLOPE_HISTOGRAM_BINS[-1]), bins=SLOPE_HISTOGRAM_BINS
     )
@@ -88,6 +87,6 @@ def build_signature(site: Site) -> SiteSignature:
 
 
 def slope_distance(a: SiteSignature, b: SiteSignature) -> float:
-    """Wasserstein entre as distribuições de declive (em graus)."""
+    """Wasserstein distance between slope distributions, in degrees."""
     centers = 0.5 * (SLOPE_HISTOGRAM_BINS[:-1] + SLOPE_HISTOGRAM_BINS[1:])
     return float(wasserstein_distance(centers, centers, a.slope_histogram, b.slope_histogram))

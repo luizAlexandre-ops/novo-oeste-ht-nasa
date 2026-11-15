@@ -16,7 +16,7 @@ from rasterio.enums import Resampling
 
 @dataclass(frozen=True)
 class RasterWindow:
-    """Dados de uma região extraída de um raster."""
+    """Data and metadata for a cropped raster region."""
 
     data: np.ma.MaskedArray
     transform: Affine
@@ -33,7 +33,7 @@ class RasterWindow:
 
     @property
     def extent(self) -> list[float]:
-        """Limites espaciais do recorte."""
+        """Spatial bounds of the crop."""
 
         rows, columns = self.data.shape
 
@@ -44,7 +44,7 @@ class RasterWindow:
 
     @property
     def scaled_values(self) -> np.ma.MaskedArray:
-        """DN * scale, sem somar o offset (o offset do LOLA é o raio de referência)."""
+        """Scaled data numbers; the LOLA offset defines the reference radius."""
         return self.data.astype("float64") * self.scale
 
 
@@ -56,11 +56,11 @@ def crop_raster_window(
     coordinate_crs: CRS,
     band: int = 1,
 ) -> RasterWindow:
-    """Extrai uma região de um raster ao redor de uma coordenada."""
+    """Crop a raster around a target coordinate."""
 
     with rasterio.open(raster_path) as dataset:
 
-        # Converte as coordenadas para o sistema de referência do raster
+        # Transform coordinates into the raster reference system
         transformer = Transformer.from_crs(
             coordinate_crs,
             dataset.crs,
@@ -69,17 +69,17 @@ def crop_raster_window(
 
         target_x, target_y = transformer.transform(x, y)
 
-        # Identifica a posição do ponto no raster
+        # Locate the target pixel
         row, column = dataset.index(target_x, target_y)
 
         if not (0 <= row < dataset.height and 0 <= column < dataset.width):
-            raise ValueError("O ponto está fora da área coberta pelo raster.")
+            raise ValueError("Target coordinate is outside the raster coverage.")
 
-        # Calcula o tamanho do recorte em pixels
+        # Convert metric crop size to pixels
         half_width_x = int(np.ceil(half_width / abs(dataset.res[0])))
         half_width_y = int(np.ceil(half_width / abs(dataset.res[1])))
 
-        # Define a janela ao redor do ponto
+        # Center the crop window around the target
         window = Window(
             column - half_width_x,
             row - half_width_y,
@@ -87,12 +87,12 @@ def crop_raster_window(
             2 * half_width_y + 1,
         )
 
-        # Garante que a janela não ultrapasse o raster
+        # Clamp the window to the raster bounds
         window = window.intersection(
             Window(0, 0, dataset.width, dataset.height)
         )
 
-        # Lê os dados e suas informações espaciais
+        # Read elevation values and georeferencing metadata
         data = dataset.read(band, window=window, masked=True)
         transform = dataset.window_transform(window)
 
@@ -124,7 +124,7 @@ def read_on_grid(
     band: int = 1,
     resampling: Resampling = Resampling.average,
 ) -> np.ma.MaskedArray:
-    """Lê `bounds` já reamostrado para `shape`, em unidade física (DN * scale)."""
+    """Read raster bounds resampled to the requested shape in physical units."""
     with rasterio.open(raster_path) as dataset:
         window = from_bounds(*bounds, transform=dataset.transform)
         data = dataset.read(
@@ -133,7 +133,7 @@ def read_on_grid(
             out_shape=shape,
             resampling=resampling,
             masked=True,
-            boundless=True,  # fora da cobertura vira máscara, não erro
+            boundless=True,  # Mark areas outside coverage as masked
         )
         scale = dataset.scales[band - 1]
     return data.astype("float64") * scale

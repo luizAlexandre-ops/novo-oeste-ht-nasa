@@ -8,7 +8,10 @@ from rasterio.merge import merge
 from rasterio.transform import from_origin
 from rasterio.warp import Resampling, reproject
 
-from src.terrain.config import COPERNICUS_TILE_URL_TEMPLATE, METERS_PER_DEGREE_LATITUDE
+from src.terrain.config import (
+    COPERNICUS_TILE_URL_TEMPLATE, COPERNICUS_CACHE_DIRECTORY,
+    METERS_PER_DEGREE_LATITUDE,
+)
 
 TILE_SEARCH_MARGIN_FACTOR = 1.3
 
@@ -28,9 +31,17 @@ def crop_copernicus_window(
     half_width_meters: float,
     pixel_size_meters: float,
 ) -> tuple[np.ndarray, float]:
-    """Elevação (m) numa grade métrica local (aeqd centrada no ponto), ímpar e
-    centrada no pixel central. Devolve (elevação, meia-largura real em metros)."""
+    """Return elevation on an odd-sized local AEQD metric grid and half-extent."""
 
+
+    cache_name = (
+        f"lat{latitude:+.5f}_lon{longitude:+.5f}_"
+        f"half{half_width_meters:.1f}_px{pixel_size_meters:.1f}.npz"
+    )
+    cache_path = COPERNICUS_CACHE_DIRECTORY / cache_name
+    if cache_path.is_file():
+        with np.load(cache_path) as cached:
+            return cached["elevation"], float(cached["half_extent"])
 
     latitude_margin = TILE_SEARCH_MARGIN_FACTOR * half_width_meters / METERS_PER_DEGREE_LATITUDE
     longitude_margin = latitude_margin / max(math.cos(math.radians(latitude)), 0.05)
@@ -49,7 +60,7 @@ def crop_copernicus_window(
                         rasterio.open(COPERNICUS_TILE_URL_TEMPLATE.format(tile_name=tile_name))
                     )
                 except RasterioIOError:
-                    missing_tile_names.append(tile_name)  # ocean or tile not public
+                    missing_tile_names.append(tile_name)  # Ocean or unavailable tile
 
         if not opened_tiles:
             raise RuntimeError(
@@ -84,5 +95,9 @@ def crop_copernicus_window(
         dst_crs=local_metric_crs,
         dst_nodata=np.nan,
         resampling=Resampling.average if pixel_size_meters >= 30 else Resampling.bilinear,
+    )
+    COPERNICUS_CACHE_DIRECTORY.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(
+        cache_path, elevation=resampled_elevation, half_extent=half_extent
     )
     return resampled_elevation, half_extent

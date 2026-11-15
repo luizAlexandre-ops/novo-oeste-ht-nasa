@@ -4,7 +4,10 @@ import numpy as np
 from rasterio.enums import Resampling
 
 from src.terrain.analysis.terrain import SiteAnalysis, analyze_site
-from src.terrain.config import AVGVISIB_PATH, DEFAULT_HALF_WIDTH_METERS, LOLA_LABEL_PATH # PSR_PATH
+from src.terrain.config import (
+    AVGVISIB_PATH, DEFAULT_HALF_WIDTH_METERS, LOLA_LABEL_PATH,
+    DIVINER_CACHE_PATH, DIVINER_TABLE_PATH,
+)
 from src.terrain.datasets.diviner import diviner_on_grid
 from src.terrain.datasets.lola import crop_lola_window, lola_elevation_meters
 from src.terrain.datasets.raster import read_on_grid
@@ -16,11 +19,11 @@ LUNAR_PIXEL_SIZE_METERS = 120.0
 
 @dataclass(frozen=True)
 class Site:
-    """Elevação, métricas e iluminação alinhadas pixel a pixel."""
+    """Co-registered elevation, terrain metrics and illumination layers."""
 
     analysis: SiteAnalysis
-    illumination_percent: np.ndarray  # mesma grade da elevação, 0-100
-    extent_km: list[float]            # [left, right, bottom, top] relativo ao alvo
+    illumination_percent: np.ndarray  # On the elevation grid, 0–100
+    extent_km: list[float]            # [left, right, bottom, top], relative to target
     pixel_size_meters: float
     layers: dict[str, np.ndarray] = field(default_factory=dict)
 
@@ -32,6 +35,7 @@ class Site:
 def build_lunar_site(
     location: Location,
     half_width_meters: float = DEFAULT_HALF_WIDTH_METERS,
+    include_diviner: bool = False,
 ) -> Site:
     window = crop_lola_window(
         LOLA_LABEL_PATH, location.latitude, location.longitude, half_width_meters
@@ -57,7 +61,10 @@ def build_lunar_site(
 
     bounds = (left, bottom, right, top)
     layers = {}
-    layers.update(diviner_on_grid(bounds, elevation.shape, window.crs))
+    if include_diviner:
+        if not (DIVINER_CACHE_PATH.exists() or DIVINER_TABLE_PATH.exists()):
+            raise FileNotFoundError("Diviner data not available")
+        layers.update(diviner_on_grid(bounds, elevation.shape, window.crs))
 
     analysis = analyze_site(location.name, elevation, pixel_size)
     return Site(analysis, illumination_percent, extent_km, pixel_size, layers)
@@ -75,7 +82,7 @@ def build_earth_site(
     analysis = analyze_site(location.name, elevation.astype("float64"), pixel_size_meters)
     return Site(
         analysis=analysis,
-        illumination_percent=np.full(elevation.shape, np.nan),  # sem análogo na Terra
+        illumination_percent=np.full(elevation.shape, np.nan),  # No directly comparable Earth layer
         extent_km=[-half_km, half_km, -half_km, half_km],
         pixel_size_meters=pixel_size_meters,
     )

@@ -1,4 +1,4 @@
-from src.terrain.database import get_connection
+from experiments.leagacy.database import get_connection
 
 def main() -> None:
     connection = get_connection()

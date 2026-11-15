@@ -7,10 +7,10 @@ from src.terrain.analysis.signature import SiteSignature, slope_distance
 
 def roughness_distance(a: SiteSignature, b: SiteSignature) -> float:
     """
-    Compara a rugosidade RMS nas escalas espaciais compartilhadas.
+    Compare RMS terrain roughness at shared spatial baselines.
 
-    Usa a diferença logarítmica para comparar proporções,
-    em vez de diferenças absolutas.
+    Use logarithmic differences to compare ratios,
+    rather than absolute differences.
     """
     shared_baselines = np.intersect1d(
         a.roughness_baselines_m,
@@ -18,7 +18,7 @@ def roughness_distance(a: SiteSignature, b: SiteSignature) -> float:
     )
 
     if len(shared_baselines) == 0:
-        raise ValueError("As assinaturas não possuem escalas de rugosidade em comum.")
+        raise ValueError("The signatures have no common roughness baselines.")
 
     distances = []
 
@@ -39,17 +39,17 @@ def roughness_distance(a: SiteSignature, b: SiteSignature) -> float:
         )
 
     if not distances:
-        raise ValueError("Não existem valores RMS válidos para comparação.")
+        raise ValueError("There are no valid RMS values for comparison.")
 
     return float(np.mean(distances))
 
 
 def relief_distance(a: SiteSignature, b: SiteSignature) -> float:
     """
-    Compara o relevo relativo dos locais usando P99 - P1.
+    Compare relative site relief using P99 minus P1.
 
-    A diferença logarítmica evita que a escala do relevo
-    domine diretamente as outras métricas.
+    The logarithmic difference prevents relief magnitude
+    from directly dominating the other metrics.
     """
     relief_a = a.scalars["relief_m"]
     relief_b = b.scalars["relief_m"]
@@ -65,7 +65,7 @@ def compare_signatures(
     lunar: SiteSignature,
     earth: SiteSignature,
 ) -> dict:
-    """Calcula as distâncias individuais entre um alvo lunar e um local terrestre."""
+    """Calculate component distances between a lunar and an Earth site."""
 
     return {
         "lunar_target": lunar.name,
@@ -78,9 +78,9 @@ def compare_signatures(
 
 def normalize_distances(values: np.ndarray) -> np.ndarray:
     """
-    Normaliza distâncias entre 0 e 1.
+    Normalize distances to the range [0, 1].
 
-    O menor valor recebe 0 e o maior recebe 1.
+    The smallest distance maps to 0 and the largest maps to 1.
     """
     minimum = np.min(values)
     maximum = np.max(values)
@@ -97,8 +97,8 @@ def rank_analogs(
     weights: dict[str, float] | None = None,
 ) -> list[dict]:
     """
-    Compara um alvo lunar com vários locais terrestres
-    e retorna os candidatos ordenados por similaridade.
+    Compare a lunar target against multiple Earth sites
+    and return Earth candidates ordered by increasing distance.
     """
     if not earth_sites:
         return []
@@ -117,15 +117,15 @@ def rank_analogs(
     }
 
     if set(weights) != expected_metrics:
-        raise ValueError(f"Os pesos devem conter exatamente: {expected_metrics}")
+        raise ValueError(f"Weights must contain exactly: {expected_metrics}")
 
     if any(weight < 0 for weight in weights.values()):
-        raise ValueError("Os pesos não podem ser negativos.")
+        raise ValueError("Weights must be non-negative.")
 
     total_weight = sum(weights.values())
 
     if total_weight <= 0:
-        raise ValueError("A soma dos pesos deve ser maior que zero.")
+        raise ValueError("The weight sum must be positive.")
 
     weights = {
         key: value / total_weight
@@ -148,7 +148,7 @@ def rank_analogs(
         for comparison, value in zip(comparisons, normalized):
             comparison[f"{metric}_normalized"] = float(value)
 
-    # Calcula a distância composta
+    # Compute the weighted composite distance
     for comparison in comparisons:
         comparison["weight_slope"] = weights["slope_distance"]
         comparison["weight_roughness"] = weights["roughness_distance"]
@@ -171,10 +171,10 @@ def export_ranking_csv(
     rankings: list[dict],
     output_path: str | Path,
 ) -> None:
-    """Exporta os resultados do ranking para CSV."""
+    """Export ranking records to a CSV file."""
 
     if not rankings:
-        raise ValueError("Não existem resultados para exportar.")
+        raise ValueError("There are no results to export.")
 
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -234,8 +234,8 @@ def sensitivity_analysis(
     earth_sites: list[SiteSignature],
 ) -> list[dict]:
     """
-    Testa diferentes combinações de pesos e retorna
-    o ranking de cada cenário.
+    Test different component weights and return
+    the ranking under each scenario.
     """
     results = []
 
