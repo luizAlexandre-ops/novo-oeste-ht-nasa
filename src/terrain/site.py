@@ -4,11 +4,11 @@ import numpy as np
 from rasterio.enums import Resampling
 
 from src.terrain.analysis.terrain import SiteAnalysis, analyze_site
-from src.terrain.config import AVGVISIB_PATH, DEFAULT_HALF_WIDTH_METERS, LOLA_LABEL_PATH, PSR_PATH
+from src.terrain.config import AVGVISIB_PATH, DEFAULT_HALF_WIDTH_METERS, LOLA_LABEL_PATH # PSR_PATH
 from src.terrain.datasets.diviner import diviner_on_grid
 from src.terrain.datasets.lola import crop_lola_window, lola_elevation_meters
 from src.terrain.datasets.raster import read_on_grid
-from src.terrain.locations import Location  # ajuste ao nome real do seu arquivo
+from src.terrain.locations import Location
 from src.terrain.datasets.copernicus import crop_copernicus_window
 
 
@@ -56,8 +56,7 @@ def build_lunar_site(
     ]
 
     bounds = (left, bottom, right, top)
-    psr = read_on_grid(PSR_PATH, bounds, elevation.shape, resampling=Resampling.average)
-    layers = {"psr_fraction": np.ma.filled(psr, np.nan)}
+    layers = {}
     layers.update(diviner_on_grid(bounds, elevation.shape, window.crs))
 
     analysis = analyze_site(location.name, elevation, pixel_size)

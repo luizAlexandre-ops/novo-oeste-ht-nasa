@@ -117,9 +117,9 @@ from src.terrain.analysis.signature import build_signature, slope_distance
 #     print(location.name, np.percentile(sun, [50, 90, 99, 100]))
 
 
-# sites = [build_lunar_site(SHACKLETON_CRATER), build_lunar_site(HAWORTH_CRATER)]
-# sites += [build_earth_site(location) for location in EARTH_ANALOG_SITES]
-# signatures = [build_signature(site) for site in sites]
+sites = [build_lunar_site(SHACKLETON_CRATER), build_lunar_site(HAWORTH_CRATER)]
+sites += [build_earth_site(location) for location in EARTH_ANALOG_SITES]
+signatures = [build_signature(site) for site in sites]
 
 # # print(f"{'métrica':28s}" + "".join(f"{s.name[:13]:>15s}" for s in signatures))
 # # for key in signatures[0].scalars:

@@ -27,7 +27,6 @@ def baixar(url, destino="data"):
 
     return caminho
 
-
 # LOLA - Modelo digital de elevação
 base_lua = (
     "https://pds-geosciences.wustl.edu/"
@@ -48,7 +47,7 @@ for nome in arquivos_lua:
 
 
 # Iluminação lunar
-url_iluminacao_lua = (
+ url_iluminacao_lua = (
     "https://pgda.gsfc.nasa.gov/data/MoonIllumination/"
     "AVGVISIB_85S_060M_201608.TIF"
 )
@@ -58,17 +57,16 @@ baixar(
     destino="data"
 )
 
-
 # LOLA - Regiões permanentemente sombreadas (PSR)
-url_psr = (
-    "https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/"
-    "LPSR_80S_20MPP_ADJ.TIF"
-)
+#    url_psr = (
+#        "https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/"
+#        "LPSR_80S_20MPP_ADJ.TIF"
+#    )
 
-baixar(
-    url_psr,
-    destino="data"
-)
+#    baixar(
+#        url_psr,
+#        destino="data"
+#    )
 
 # Diviner - temperatura média e máxima anuais (polo sul)
 base_diviner = (

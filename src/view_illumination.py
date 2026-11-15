@@ -1,14 +1,12 @@
-
 import rasterio
 import numpy as np
 import matplotlib.pyplot as plt
-
+from scipy import ndimage
 from pyproj import CRS, Transformer
 from rasterio.windows import Window
 from rasterio.plot import plotting_extent
 
-
-caminho = "dados/AVGVISIB_85S_060M_201608.TIF"
+caminho = "data/AVGVISIB_85S_060M_201608.TIF"
 
 latitude = -89.9
 longitude = 129.8
@@ -18,7 +16,6 @@ meia_largura_m = 20_000
 lua = CRS.from_proj4(
     "+proj=longlat +R=1737400 +no_defs"
 )
-
 
 with rasterio.open(caminho) as src:
 

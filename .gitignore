@@ -222,3 +222,6 @@ __marimo__/
 data/
 outputs/
 dados/
+
+# Local OPeNDAP configuration
+.dodsrc

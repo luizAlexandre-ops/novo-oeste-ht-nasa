@@ -8,7 +8,7 @@ from matplotlib.colors import LightSource
 
 lua = CRS.from_proj4("+proj=longlat +R=1737400 +no_defs")
 
-caminho = "dados/ldem_75s_120m.lbl"
+caminho = "data/ldem_75s_120m.lbl"
 
 shackletonLat, shackletonLon = -89.9, 129.8
 

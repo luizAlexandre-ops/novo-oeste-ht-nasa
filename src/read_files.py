@@ -1,8 +1,7 @@
 import rasterio, numpy as np
 import matplotlib.pyplot as plt
 
-caminho = "dados/ldem_75s_120m.lbl"
-
+caminho = "data/ldem_75s_120m.lbl"
 
 # with rasterio.open(caminho) as src:
 #     print("crs:", src.crs, "res:", src.res, "shape:", src.shape, "scales:", src.scales, "offsets:", src.offsets)

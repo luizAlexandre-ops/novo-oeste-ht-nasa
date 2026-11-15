@@ -1,6 +1,6 @@
 import rasterio, numpy as np
 
-caminho = "dados/AVGVISIB_85S_060M_201608.TIF"
+caminho = "data/AVGVISIB_85S_060M_201608.TIF"
 
 with rasterio.open(caminho) as src:
     dados = src.read(1, masked=True)
