@@ -1,11 +1,14 @@
 
 import numpy as np
+from pyproj import CRS, Transformer
+import rasterio
 from scripts.plot_lunar_comparason import plot_site
 from src.terrain import site
 from src.terrain.analysis.roughness import compute_roughness_profile, rms_deviation_map
-from src.terrain.config import AVGVISIB_PATH, LOLA_LABEL_PATH
+from src.terrain.config import AVGVISIB_PATH, LOLA_LABEL_PATH, DATA_DIRECTORY
+from src.terrain.datasets import lola
 from src.terrain.datasets.lola import crop_lola_window, lola_elevation_meters
-from src.terrain.locations import SHACKLETON_CRATER
+from src.terrain.locations import HAWORTH_CRATER, SHACKLETON_CRATER
 from src.terrain.site import build_lunar_site
 
 # rng = np.random.default_rng(0)
@@ -50,11 +53,11 @@ from src.terrain.site import build_lunar_site
 #     print(d.crs, d.res, d.shape, d.dtypes, d.scales, d.offsets, d.nodata, d.bounds)
 
 
-site = build_lunar_site(SHACKLETON_CRATER)
-print(site.analysis.elevation_meters.shape, site.illumination_percent.shape)  # iguais
-print(np.nanmin(site.illumination_percent), np.nanmax(site.illumination_percent))
-print(np.isnan(site.illumination_percent).mean())  # fração sem dado
-plot_site(site)
+# site = build_lunar_site(SHACKLETON_CRATER)
+# print(site.analysis.elevation_meters.shape, site.illumination_percent.shape)  # iguais
+# print(np.nanmin(site.illumination_percent), np.nanmax(site.illumination_percent))
+# print(np.isnan(site.illumination_percent).mean())  # fração sem dado
+# plot_site(site)
 
 # site = build_lunar_site(SHACKLETON_CRATER)
 # r = site.analysis.metrics.roughness_meters
@@ -64,3 +67,25 @@ plot_site(site)
 # noise = rng.normal(0, 5, (335, 335))
 # m = rms_deviation_map(noise, 120.0, 240.0, 1200.0)
 # print(np.isfinite(m).mean(), np.nanmean(m)) 
+
+
+# with rasterio.open(LOLA_LABEL_PATH) as lola, \
+#      rasterio.open(DATA_DIRECTORY / "LPSR_80S_20MPP_ADJ.TIF") as psr:
+#     print(lola.crs == psr.crs)  # False pode ser só formatação do WKT: compare os dois
+#     print(psr.crs, psr.res, psr.bounds, psr.dtypes, psr.nodata)
+
+# moon = CRS.from_proj4("+proj=longlat +R=1737400 +no_defs")
+# for crs in (lola.crs, psr.crs):
+#     print(Transformer.from_crs(moon, crs, always_xy=True).transform(129.8, -89.9))
+
+
+for location in (SHACKLETON_CRATER, HAWORTH_CRATER):
+    site = build_lunar_site(location)
+    psr = site.layers["psr_fraction"]
+    lit = site.illumination_percent
+    ok = np.isfinite(psr) & np.isfinite(lit)
+    in_psr, dark = psr[ok] >= 0.5, lit[ok] <= 1.0
+    print(location.name)
+    print("  AVGVISIB ~0 dentro do PSR:", dark[in_psr].mean())
+    print("  PSR entre pixels escuros :", in_psr[dark].mean())
+    print("  sem dado Diviner:", np.isnan(site.layers["temp_max_k"]).mean())

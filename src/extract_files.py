@@ -83,17 +83,17 @@ for nome in ["dlre_prp_south.tab", "dlre_prp_south.xml"]:
         destino="data"
     )
 
-# NASA Earthdata - temperatura (MOD11C3) e neve (MOD10CM), Terra/MODIS
-earthaccess.login(persist=True)   # pede usuário e senha do Earthdata na 1ª vez
+# # NASA Earthdata - temperatura (MOD11C3) e neve (MOD10CM), Terra/MODIS
+# earthaccess.login(persist=True)   # pede usuário e senha do Earthdata na 1ª vez
 
-periodo = ("2025-01-01", "2025-12-31")
+# periodo = ("2025-01-01", "2025-12-31")
 
-for sigla, versao in [("MOD11C3", "061"), ("MOD10CM", "61")]:
-    resultados = earthaccess.search_data(
-        short_name=sigla,
-        version=versao,
-        temporal=periodo,
-    )
-    print(sigla, "-", len(resultados), "arquivos encontrados")
+# for sigla, versao in [("MOD11C3", "061"), ("MOD10CM", "61")]:
+#     resultados = earthaccess.search_data(
+#         short_name=sigla,
+#         version=versao,
+#         temporal=periodo,
+#     )
+#     print(sigla, "-", len(resultados), "arquivos encontrados")
 
-    earthaccess.download(resultados, "data")
+#     earthaccess.download(resultados, "data")

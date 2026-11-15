@@ -1,10 +1,11 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import numpy as np
 from rasterio.enums import Resampling
 
 from src.terrain.analysis.terrain import SiteAnalysis, analyze_site
-from src.terrain.config import AVGVISIB_PATH, DEFAULT_HALF_WIDTH_METERS, LOLA_LABEL_PATH
+from src.terrain.config import AVGVISIB_PATH, DEFAULT_HALF_WIDTH_METERS, LOLA_LABEL_PATH, PSR_PATH
+from src.terrain.datasets.diviner import diviner_on_grid
 from src.terrain.datasets.lola import crop_lola_window, lola_elevation_meters
 from src.terrain.datasets.raster import read_on_grid
 from src.terrain.locations import Location  # ajuste ao nome real do seu arquivo
@@ -18,6 +19,7 @@ class Site:
     illumination_percent: np.ndarray  # mesma grade da elevação, 0-100
     extent_km: list[float]            # [left, right, bottom, top] relativo ao alvo
     pixel_size_meters: float
+    layers: dict[str, np.ndarray] = field(default_factory=dict)
 
     @property
     def name(self) -> str:
@@ -49,5 +51,11 @@ def build_lunar_site(
         (bottom - window.target_y) / 1000,
         (top - window.target_y) / 1000,
     ]
+
+    bounds = (left, bottom, right, top)
+    psr = read_on_grid(PSR_PATH, bounds, elevation.shape, resampling=Resampling.average)
+    layers = {"psr_fraction": np.ma.filled(psr, np.nan)}
+    layers.update(diviner_on_grid(bounds, elevation.shape, window.crs))
+
     analysis = analyze_site(location.name, elevation, pixel_size)
-    return Site(analysis, illumination_percent, extent_km, pixel_size)
+    return Site(analysis, illumination_percent, extent_km, pixel_size, layers)
