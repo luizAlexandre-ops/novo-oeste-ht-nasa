@@ -61,3 +61,15 @@ Scientific cautions: candidate coverage is regional, not a global search. Same o
 - `requirements-legacy.txt`: optional older PostgreSQL integration dependencies.
 
 Run tests with `python -m pytest -q` after installing `pytest`.
+
+
+## Interactive dashboard (Lunar Analog Explorer)
+
+Launch the dashboard **after** exporting pipeline results, or use the pre-packaged demo with bundled outputs:
+
+```powershell
+python -m pip install -r requirements-dashboard.txt
+python -m streamlit run dashboard/app.py
+```
+
+The dashboard reads the exported rankings, sensitivity tables, summary and PNG figures without downloading datasets or recomputing terrain. It supports selectable lunar targets, interactive weights, terrain-panel comparisons, sensitivity heatmaps, candidate locations and CSV exports. See [dashboard/README.md](dashboard/README.md).

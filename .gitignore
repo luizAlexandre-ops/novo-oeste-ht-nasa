@@ -225,3 +225,5 @@ dados/
 
 # Local OPeNDAP configuration
 .dodsrc
+.env
+*.part

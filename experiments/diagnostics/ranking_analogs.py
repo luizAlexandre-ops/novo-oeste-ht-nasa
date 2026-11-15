@@ -62,7 +62,7 @@ def run_analysis(lunar_signature, earth_signatures, suffix=""):
         earth_signatures,
     )
 
-    # Nome seguro para os arquivos
+    # File-safe output name
     lunar_name = lunar_signature.name.lower().replace(" ", "_")
 
     # Exporta ranking
@@ -71,7 +71,7 @@ def run_analysis(lunar_signature, earth_signatures, suffix=""):
         OUTPUT_DIRECTORY / f"{lunar_name}_ranking{suffix}.csv",
     )
 
-    # Exporta análise de sensibilidade
+    # Export sensitivity analysis
     export_ranking_csv(
         sensitivity,
         OUTPUT_DIRECTORY / f"{lunar_name}_sensitivity{suffix}.csv",
@@ -93,7 +93,7 @@ def run_analysis(lunar_signature, earth_signatures, suffix=""):
 if __name__ == "__main__":
     OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
-    # 1. Constrói as assinaturas lunares
+    # 1. Build lunar signatures
     shackleton = build_signature(
         build_lunar_site(SHACKLETON_CRATER)
     )
@@ -107,29 +107,29 @@ if __name__ == "__main__":
         haworth,
     ]
 
-    # 2. Constrói as assinaturas terrestres
+    # 2. Build Earth signatures
     earth_signatures = [
         build_signature(build_earth_site(location))
         for location in EARTH_ANALOG_SITES
     ]
 
-    # 3. Cria uma segunda lista sem Haughton
+    # 3. Build a second candidate list without Haughton
     earth_without_haughton = [
         signature
         for signature in earth_signatures
         if signature.name != "Haughton Crater"
     ]
 
-    # 4. Executa as duas análises
+    # 4. Run both analyses
     for lunar in lunar_signatures:
 
-        # Análise original: todos os candidatos
+        # Original analysis: all candidates
         original_ranking, original_sensitivity = run_analysis(
             lunar,
             earth_signatures,
         )
 
-        # Análise alternativa: sem Haughton
+        # Alternative analysis: exclude Haughton
         filtered_ranking, filtered_sensitivity = run_analysis(
             lunar,
             earth_without_haughton,
@@ -149,7 +149,7 @@ if __name__ == "__main__":
         else:
             print("ATENÇÃO: o primeiro colocado mudou.")
 
-        # Compara vencedores em cada cenário de sensibilidade
+        # Compare the winner in each sensitivity scenario
         original_winners = {
             result["scenario"]: result["earth_site"]
             for result in original_sensitivity

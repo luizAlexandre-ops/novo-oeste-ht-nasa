@@ -48,7 +48,7 @@ def validate_elevation_patterns(site):
             f"{largest * site.pixel_size_meters**2 / 1e6:.2f} km²"
         )
 
-    # Identifica a concentração de valores muito próximos da mediana
+    # Check concentrations of values near the median
     median = np.median(values)
     near_median = np.abs(values - median) < 1.0
 
@@ -57,7 +57,7 @@ def validate_elevation_patterns(site):
         f"{near_median.mean():.2%}"
     )
 
-    # Valores exatos que mais se repetem
+    # Most frequent exact elevation values
     unique, counts = np.unique(values, return_counts=True)
     top_indices = np.argsort(counts)[-5:][::-1]
 
@@ -127,18 +127,18 @@ def validate_site(site):
     print(f"VALIDANDO: {site.name}")
     print(f"{'=' * 65}")
 
-    # 1. Resolução espacial
+    # 1. Spatial resolution
     pixel_size = float(site.pixel_size_meters)
     print(f"Resolução: {pixel_size:.3f} m/pixel")
 
     if not np.isfinite(pixel_size) or pixel_size <= 0:
-        issues.append("Resolução espacial inválida.")
+        issues.append("Spatial resolution inválida.")
     elif abs(pixel_size - EXPECTED_PIXEL_SIZE_M) > PIXEL_SIZE_TOLERANCE_M:
         issues.append(
             f"Resolução diferente da esperada: {EXPECTED_PIXEL_SIZE_M} m."
         )
 
-    # 2. Pixels inválidos
+    # 2. Invalid pixels
     valid_mask = np.isfinite(elevation)
     valid_count = np.count_nonzero(valid_mask)
     total_count = elevation.size
@@ -146,7 +146,7 @@ def validate_site(site):
 
     print(f"Dimensões: {elevation.shape}")
     print(f"Pixels válidos: {valid_count}/{total_count}")
-    print(f"Pixels inválidos: {missing_fraction:.2%}")
+    print(f"Invalid pixels: {missing_fraction:.2%}")
 
     if valid_count == 0:
         issues.append("Nenhum pixel de elevação válido.")
@@ -158,7 +158,7 @@ def validate_site(site):
     if valid_count > 0:
         values = elevation[valid_mask]
 
-        # 3. Estatísticas de elevação
+        # 3. Elevation statistics
         print("\nELEVAÇÃO")
         print(f"Mínima: {np.min(values):.2f} m")
         print(f"Máxima: {np.max(values):.2f} m")
@@ -172,7 +172,7 @@ def validate_site(site):
         if not np.isfinite(relief) or relief < 0:
             issues.append("Relevo calculado inválido.")
 
-        # Verifica diferenças extremas entre pixels vizinhos
+        # Check large differences between neighboring cells
         dx = np.abs(np.diff(elevation, axis=1))
         dy = np.abs(np.diff(elevation, axis=0))
 
@@ -235,7 +235,7 @@ def validate_site(site):
         if np.any(baselines <= 0) or np.any(~np.isfinite(baselines)):
             issues.append("Existem baselines inválidas.")
 
-    # Resultado da validação
+    # Validation result
     print("\nRESULTADO")
 
     if issues:

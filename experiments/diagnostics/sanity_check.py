@@ -2,7 +2,7 @@
 import numpy as np
 from pyproj import CRS, Transformer
 import rasterio
-from experiments.leagacy.plot_lunar_comparason import plot_site
+from scripts.plot_lunar_comparason import plot_site
 from src.terrain import site
 from src.terrain.analysis.roughness import compute_roughness_profile, rms_deviation_map
 from src.terrain.config import AVGVISIB_PATH, LOLA_LABEL_PATH, DATA_DIRECTORY
@@ -16,16 +16,16 @@ from src.terrain.analysis.signature import build_signature, slope_distance
 # size, pixel = 400, 120.0
 # x, y = np.meshgrid(np.arange(size), np.arange(size))
 
-# # 1) Plano inclinado a ~20°: rugosidade deve ser ~0 com detrend
+# # 1) A ~20° tilted plane should have near-zero detrended roughness
 # plane = np.tan(np.radians(20)) * pixel * x
 # print(compute_roughness_profile(plane, pixel).rms_deviation_meters)   # ~0
 
-# # 2) Ruído branco: RMS constante com a escala, Hurst ~ 0
+# # 2) White noise: RMS approximately constant across scales, Hurst ~ 0
 # noise = rng.normal(0, 5, (size, size))
 # print(compute_roughness_profile(noise, pixel).hurst_exponent)         # ~0
 
-# # 3) Superfície fractal (movimento browniano fracionário): Hurst ~ 0.5-0.9
-# #    gere via filtro espectral 1/f^(H+1) e confira se o valor recuperado bate
+# # 3) Fractal surface (fractional Brownian motion): Hurst ~ 0.5-0.9
+# #    synthesize with a 1/f^(H+1) spectral filter and check the estimated value
 
 # def fractal_surface(size, hurst, rng):
 #     freq = np.fft.fftfreq(size)
@@ -57,7 +57,7 @@ from src.terrain.analysis.signature import build_signature, slope_distance
 # site = build_lunar_site(SHACKLETON_CRATER)
 # print(site.analysis.elevation_meters.shape, site.illumination_percent.shape)  # iguais
 # print(np.nanmin(site.illumination_percent), np.nanmax(site.illumination_percent))
-# print(np.isnan(site.illumination_percent).mean())  # fração sem dado
+# print(np.isnan(site.illumination_percent).mean())  # missing data fraction
 # plot_site(site)
 
 # site = build_lunar_site(SHACKLETON_CRATER)
@@ -72,7 +72,7 @@ from src.terrain.analysis.signature import build_signature, slope_distance
 
 # with rasterio.open(LOLA_LABEL_PATH) as lola, \
 #      rasterio.open(DATA_DIRECTORY / "LPSR_80S_20MPP_ADJ.TIF") as psr:
-#     print(lola.crs == psr.crs)  # False pode ser só formatação do WKT: compare os dois
+#     print(lola.crs == psr.crs)  # False may reflect WKT formatting; compare both CRSs
 #     print(psr.crs, psr.res, psr.bounds, psr.dtypes, psr.nodata)
 
 # moon = CRS.from_proj4("+proj=longlat +R=1737400 +no_defs")
@@ -104,10 +104,10 @@ from src.terrain.analysis.signature import build_signature, slope_distance
 # shackleton = build_signature(build_lunar_site(SHACKLETON_CRATER))
 # haworth = build_signature(build_lunar_site(HAWORTH_CRATER))
 
-# print(f"{'métrica':30s} {'Shackleton':>12s} {'Haworth':>12s}")
+# print(f"{'metric':30s} {'Shackleton':>12s} {'Haworth':>12s}")
 # for key, value in shackleton.scalars.items():
 #     print(f"{key:30s} {value:12.3f} {haworth.scalars[key]:12.3f}")
-# print("distância de declive:", slope_distance(shackleton, haworth))
+# print("slope distance:", slope_distance(shackleton, haworth))
 
 
 # for location in (SHACKLETON_CRATER, HAWORTH_CRATER):
@@ -121,7 +121,7 @@ sites = [build_lunar_site(SHACKLETON_CRATER), build_lunar_site(HAWORTH_CRATER)]
 sites += [build_earth_site(location) for location in EARTH_ANALOG_SITES]
 signatures = [build_signature(site) for site in sites]
 
-print(f"{'métrica':28s}" + "".join(f"{s.name[:13]:>15s}" for s in signatures))
+print(f"{'metric':28s}" + "".join(f"{s.name[:13]:>15s}" for s in signatures))
 for key in signatures[0].scalars:
     row = "".join(f"{s.scalars.get(key, float('nan')):15.3f}" for s in signatures)
     print(f"{key:28s}{row}")
