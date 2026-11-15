@@ -77,7 +77,7 @@ def crop_copernicus_window(
             -half_width_meters, half_width_meters, pixel_size_meters, pixel_size_meters
         ),
         dst_crs=local_metric_crs,
-        resampling=Resampling.bilinear,
+        resampling=Resampling.average if pixel_size_meters >= 60 else Resampling.bilinear,
         dst_nodata=np.nan,
     )
     return resampled_elevation

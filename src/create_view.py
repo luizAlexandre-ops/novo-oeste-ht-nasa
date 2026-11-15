@@ -8,7 +8,7 @@ from matplotlib.colors import LightSource
 
 lua = CRS.from_proj4("+proj=longlat +R=1737400 +no_defs")
 
-caminho = "dados/ldem_75s_30m.lbl"
+caminho = "dados/ldem_75s_120m.lbl"
 
 shackletonLat, shackletonLon = -89.9, 129.8
 
@@ -33,8 +33,6 @@ with rasterio.open(caminho) as src:
 
 ext = plotting_extent(alt, tf)
 ext_km = [e / 1000 for e in ext]
-
-
 
 ls = LightSource(azdeg=315, altdeg=20)  
 hs = ls.hillshade(alt, vert_exag=2, dx=30, dy=30)
