@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import numpy as np
 from scipy.ndimage import uniform_filter
 
-from src.terrain.config import DEFAULT_BASELINES_METERS
+from src.terrain.config import DEFAULT_BASELINES_METERS, MIN_RMS_METERS
 
 @dataclass
 class RoughnessProfile:
@@ -137,3 +137,34 @@ def rms_deviation_map(
     roughness = np.sqrt(np.nanmean(np.stack(variances), axis = 0))
     roughness[~np.isfinite(elevation_meters)] = np.nan
     return roughness
+
+
+def compute_local_roughness_profile(
+    elevation_meters: np.ndarray,
+    pixel_size_meters: float,
+    baselines_meters: tuple[float, ...] = DEFAULT_BASELINES_METERS,
+    window_factor: float = 4.0,
+) -> RoughnessProfile:
+    """Mediana do RMS deviation local (inclinação removida por janela) para cada baseline.
+    A janela cresce com o baseline (window_factor x baseline) para sempre conter várias diferenças."""
+    used_baselines, used_values = [], []
+    for baseline in baselines_meters:
+        lag = baseline_to_lag(baseline, pixel_size_meters)
+        window_meters = window_factor * lag * pixel_size_meters
+        if window_meters / pixel_size_meters > min(elevation_meters.shape) // 2:
+            continue  # janela grande demais para o recorte
+        local_map = rms_deviation_map(
+            elevation_meters, pixel_size_meters, baseline, window_meters
+        )
+        value = np.nanmedian(local_map)
+        if np.isfinite(value) and value > MIN_RMS_METERS:
+            used_baselines.append(lag * pixel_size_meters)
+            used_values.append(value)
+
+    baselines, values = np.array(used_baselines), np.array(used_values)
+    hurst = (
+        float(np.polyfit(np.log(baselines), np.log(values), 1)[0])
+        if len(baselines) >= 2
+        else float("nan")
+    )
+    return RoughnessProfile(baselines, values, hurst)

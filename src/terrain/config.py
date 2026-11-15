@@ -1,4 +1,6 @@
+import numpy as np
 from pathlib import Path
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIRECTORY = PROJECT_ROOT / "data"
@@ -34,3 +36,14 @@ DEFAULT_BASELINES_METERS = (120.0, 240.0, 480.0, 960.0, 1920.0)
 
 ROUGHNESS_MAP_BASELINE_METERS = 240.0
 ROUGHNESS_MAP_WINDOW_METERS = 1200.0
+
+
+LANDING_SLOPE_LIMITS_DEGREES = (5.0, 10.0)
+
+LIT_THRESHOLDS_PERCENT = (10.0, 20.0, 30.0)
+LANDABLE_LIT_THRESHOLD_PERCENT = 20.0       # usado na métrica combinada pouso + Sol
+SUNLIT_MAX_PSR_FRACTION = 0.1    
+              # abaixo disso o pixel conta como fora do PSR
+SLOPE_HISTOGRAM_BINS = np.arange(0, 46, 1.0)
+
+MIN_RMS_METERS = 1e-6

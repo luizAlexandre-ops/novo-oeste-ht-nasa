@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import numpy as np
 from scipy.ndimage import uniform_filter
 
-from src.terrain.analysis.roughness import RoughnessProfile, rms_deviation_map, compute_roughness_profile
+from src.terrain.analysis.roughness import RoughnessProfile, compute_local_roughness_profile, rms_deviation_map, compute_roughness_profile
 from src.terrain.config import (
     DEFAULT_BASELINES_METERS,
     ROUGHNESS_MAP_BASELINE_METERS,
@@ -79,7 +79,7 @@ def analyze_site(
     pixel_size_meters: float,
 ) -> SiteAnalysis:
     metrics = compute_terrain_metrics(elevation_meters, pixel_size_meters)
-    profile = compute_roughness_profile(
+    profile = compute_local_roughness_profile(
         elevation_meters, pixel_size_meters, DEFAULT_BASELINES_METERS
     )
     return SiteAnalysis(

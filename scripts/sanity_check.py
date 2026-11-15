@@ -8,8 +8,9 @@ from src.terrain.analysis.roughness import compute_roughness_profile, rms_deviat
 from src.terrain.config import AVGVISIB_PATH, LOLA_LABEL_PATH, DATA_DIRECTORY
 from src.terrain.datasets import lola
 from src.terrain.datasets.lola import crop_lola_window, lola_elevation_meters
-from src.terrain.locations import HAWORTH_CRATER, SHACKLETON_CRATER
-from src.terrain.site import build_lunar_site
+from src.terrain.locations import EARTH_ANALOG_SITES, HAWORTH_CRATER, SHACKLETON_CRATER
+from src.terrain.site import build_lunar_site, build_earth_site
+from src.terrain.analysis.signature import build_signature, slope_distance
 
 # rng = np.random.default_rng(0)
 # size, pixel = 400, 120.0
@@ -79,13 +80,64 @@ from src.terrain.site import build_lunar_site
 #     print(Transformer.from_crs(moon, crs, always_xy=True).transform(129.8, -89.9))
 
 
-for location in (SHACKLETON_CRATER, HAWORTH_CRATER):
-    site = build_lunar_site(location)
-    psr = site.layers["psr_fraction"]
-    lit = site.illumination_percent
-    ok = np.isfinite(psr) & np.isfinite(lit)
-    in_psr, dark = psr[ok] >= 0.5, lit[ok] <= 1.0
-    print(location.name)
-    print("  AVGVISIB ~0 dentro do PSR:", dark[in_psr].mean())
-    print("  PSR entre pixels escuros :", in_psr[dark].mean())
-    print("  sem dado Diviner:", np.isnan(site.layers["temp_max_k"]).mean())
+# for location in (SHACKLETON_CRATER, HAWORTH_CRATER):
+#     site = build_lunar_site(location)
+#     psr = site.layers["psr_fraction"]
+#     lit = site.illumination_percent
+#     ok = np.isfinite(psr) & np.isfinite(lit)
+#     in_psr, dark = psr[ok] >= 0.5, lit[ok] <= 1.0
+#     print(location.name)
+#     print("  AVGVISIB ~0 dentro do PSR:", dark[in_psr].mean())
+#     print("  PSR entre pixels escuros :", in_psr[dark].mean())
+#     print("  sem dado Diviner:", np.isnan(site.layers["temp_max_k"]).mean())
+
+
+# for location in EARTH_ANALOG_SITES:
+#     site = build_earth_site(location)
+#     elevation = site.analysis.elevation_meters
+#     print(location.name, elevation.shape, np.isnan(elevation).mean(),
+#           np.nanmin(elevation), np.nanmax(elevation))
+#     plot_site(site)
+
+
+
+# shackleton = build_signature(build_lunar_site(SHACKLETON_CRATER))
+# haworth = build_signature(build_lunar_site(HAWORTH_CRATER))
+
+# print(f"{'métrica':30s} {'Shackleton':>12s} {'Haworth':>12s}")
+# for key, value in shackleton.scalars.items():
+#     print(f"{key:30s} {value:12.3f} {haworth.scalars[key]:12.3f}")
+# print("distância de declive:", slope_distance(shackleton, haworth))
+
+
+# for location in (SHACKLETON_CRATER, HAWORTH_CRATER):
+#     site = build_lunar_site(location)
+#     lit, psr = site.illumination_percent, site.layers["psr_fraction"]
+#     sun = lit[np.isfinite(lit) & (psr < 0.1)]
+#     print(location.name, np.percentile(sun, [50, 90, 99, 100]))
+
+
+# sites = [build_lunar_site(SHACKLETON_CRATER), build_lunar_site(HAWORTH_CRATER)]
+# sites += [build_earth_site(location) for location in EARTH_ANALOG_SITES]
+# signatures = [build_signature(site) for site in sites]
+
+# # print(f"{'métrica':28s}" + "".join(f"{s.name[:13]:>15s}" for s in signatures))
+# # for key in signatures[0].scalars:
+# #     row = "".join(f"{s.scalars.get(key, float('nan')):15.3f}" for s in signatures)
+# #     print(f"{key:28s}{row}")
+
+# # print()
+# # for s in signatures[1:]:
+# #     print(f"declive: Shackleton x {s.name:25s} {slope_distance(signatures[0], s):.2f}")
+
+
+# import matplotlib.pyplot as plt
+
+# fig, ax = plt.subplots(figsize=(7, 5))
+# for s in signatures:
+#     ax.loglog(s.roughness_baselines_m, s.roughness_rms_m, "o-",
+#               label=f"{s.name} (exp={s.scalars['hurst']:.2f})")
+# ax.set_xlabel("Baseline (m)")
+# ax.set_ylabel("RMS deviation (m)")
+# ax.legend()
+# plt.show()

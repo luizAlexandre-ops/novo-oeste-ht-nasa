@@ -27,10 +27,11 @@ def crop_copernicus_window(
     longitude: float,
     half_width_meters: float,
     pixel_size_meters: float,
-) -> np.ndarray:
-    """Download only the needed 1x1 degree COG tiles and resample them onto a
-    local metric grid (azimuthal equidistant, centered on the point) with the
-    given pixel size. Returns elevation in meters."""
+) -> tuple[np.ndarray, float]:
+    """Elevação (m) numa grade métrica local (aeqd centrada no ponto), ímpar e
+    centrada no pixel central. Devolve (elevação, meia-largura real em metros)."""
+
+
     latitude_margin = TILE_SEARCH_MARGIN_FACTOR * half_width_meters / METERS_PER_DEGREE_LATITUDE
     longitude_margin = latitude_margin / max(math.cos(math.radians(latitude)), 0.05)
     west, south = longitude - longitude_margin, latitude - latitude_margin
@@ -55,29 +56,33 @@ def crop_copernicus_window(
                 f"No tile found at ({latitude}, {longitude}). Tried: {missing_tile_names}"
             )
         try:
-            mosaic, mosaic_transform = merge(opened_tiles, bounds=(west, south, east, north))
+            mosaic, mosaic_transform = merge(
+                opened_tiles, bounds=(west, south, east, north), nodata=np.nan
+            )
         finally:
             for tile in opened_tiles:
                 tile.close()
 
     if missing_tile_names:
-        print(f"  warning: missing tiles (filled with 0): {missing_tile_names}")
+        print(f"  warning: missing tiles (NaN in the result): {missing_tile_names}")
 
     local_metric_crs = CRS.from_proj4(
         f"+proj=aeqd +lat_0={latitude} +lon_0={longitude} +datum=WGS84 +units=m +no_defs"
     )
-    side_pixels = int(round(2 * half_width_meters / pixel_size_meters))
+    half_pixels = math.ceil(half_width_meters / pixel_size_meters)
+    side_pixels = 2 * half_pixels + 1
+    half_extent = side_pixels * pixel_size_meters / 2
+
     resampled_elevation = np.full((side_pixels, side_pixels), np.nan, dtype="float32")
     reproject(
         source=mosaic[0].astype("float32"),
         destination=resampled_elevation,
         src_transform=mosaic_transform,
         src_crs="EPSG:4326",
-        dst_transform=from_origin(
-            -half_width_meters, half_width_meters, pixel_size_meters, pixel_size_meters
-        ),
+        src_nodata=np.nan,
+        dst_transform=from_origin(-half_extent, half_extent, pixel_size_meters, pixel_size_meters),
         dst_crs=local_metric_crs,
-        resampling=Resampling.average if pixel_size_meters >= 60 else Resampling.bilinear,
         dst_nodata=np.nan,
+        resampling=Resampling.average if pixel_size_meters >= 30 else Resampling.bilinear,
     )
-    return resampled_elevation
+    return resampled_elevation, half_extent

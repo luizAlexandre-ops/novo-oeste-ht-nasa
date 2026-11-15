@@ -9,7 +9,10 @@ from src.terrain.datasets.diviner import diviner_on_grid
 from src.terrain.datasets.lola import crop_lola_window, lola_elevation_meters
 from src.terrain.datasets.raster import read_on_grid
 from src.terrain.locations import Location  # ajuste ao nome real do seu arquivo
+from src.terrain.datasets.copernicus import crop_copernicus_window
 
+
+LUNAR_PIXEL_SIZE_METERS = 120.0
 
 @dataclass(frozen=True)
 class Site:
@@ -59,3 +62,21 @@ def build_lunar_site(
 
     analysis = analyze_site(location.name, elevation, pixel_size)
     return Site(analysis, illumination_percent, extent_km, pixel_size, layers)
+
+
+def build_earth_site(
+    location: Location,
+    half_width_meters: float = DEFAULT_HALF_WIDTH_METERS,
+    pixel_size_meters: float = LUNAR_PIXEL_SIZE_METERS,
+) -> Site:
+    elevation, half_extent = crop_copernicus_window(
+        location.latitude, location.longitude, half_width_meters, pixel_size_meters
+    )
+    half_km = half_extent / 1000
+    analysis = analyze_site(location.name, elevation.astype("float64"), pixel_size_meters)
+    return Site(
+        analysis=analysis,
+        illumination_percent=np.full(elevation.shape, np.nan),  # sem análogo na Terra
+        extent_km=[-half_km, half_km, -half_km, half_km],
+        pixel_size_meters=pixel_size_meters,
+    )
