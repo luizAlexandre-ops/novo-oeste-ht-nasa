@@ -1,0 +1,36 @@
+﻿lunar_target,scenario,earth_site,rank,composite_distance,weight_slope,weight_roughness,weight_relief
+Haworth,balanced,Tolbachik,1,0.0,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Haworth,balanced,Death Valley,2,0.09714547467319418,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Haworth,balanced,Pinacate,3,0.5079880796822938,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Haworth,balanced,Meteor Crater,4,0.6431348893536338,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Haworth,balanced,Atacama,5,1.0,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Haworth,slope_focus,Tolbachik,1,0.0,0.6,0.2,0.2
+Haworth,slope_focus,Death Valley,2,0.09258193618102054,0.6,0.2,0.2
+Haworth,slope_focus,Pinacate,3,0.6175171214776267,0.6,0.2,0.2
+Haworth,slope_focus,Meteor Crater,4,0.7539483612367368,0.6,0.2,0.2
+Haworth,slope_focus,Atacama,5,1.0,0.6,0.2,0.2
+Haworth,roughness_focus,Tolbachik,1,0.0,0.2,0.6,0.2
+Haworth,roughness_focus,Death Valley,2,0.08556061806401188,0.2,0.6,0.2
+Haworth,roughness_focus,Pinacate,3,0.34974975716792256,0.2,0.6,0.2
+Haworth,roughness_focus,Meteor Crater,4,0.49733488904164214,0.2,0.6,0.2
+Haworth,roughness_focus,Atacama,5,1.0,0.2,0.6,0.2
+Haworth,relief_focus,Tolbachik,1,0.0,0.2,0.2,0.6
+Haworth,relief_focus,Death Valley,2,0.11329386977455011,0.2,0.2,0.6
+Haworth,relief_focus,Pinacate,3,0.556697360401332,0.2,0.2,0.6
+Haworth,relief_focus,Meteor Crater,4,0.6781214177825227,0.2,0.2,0.6
+Haworth,relief_focus,Atacama,5,1.0,0.2,0.2,0.6
+Haworth,slope_roughness,Tolbachik,1,0.0,0.4,0.4,0.2
+Haworth,slope_roughness,Death Valley,2,0.08907127712251622,0.4,0.4,0.2
+Haworth,slope_roughness,Pinacate,3,0.4836334393227747,0.4,0.4,0.2
+Haworth,slope_roughness,Meteor Crater,4,0.6256416251391895,0.4,0.4,0.2
+Haworth,slope_roughness,Atacama,5,1.0,0.4,0.4,0.2
+Haworth,slope_relief,Tolbachik,1,0.0,0.4,0.2,0.4
+Haworth,slope_relief,Death Valley,2,0.10293790297778532,0.4,0.2,0.4
+Haworth,slope_relief,Pinacate,3,0.5871072409394794,0.4,0.2,0.4
+Haworth,slope_relief,Meteor Crater,4,0.7160348895096298,0.4,0.2,0.4
+Haworth,slope_relief,Atacama,5,1.0,0.4,0.2,0.4
+Haworth,roughness_relief,Tolbachik,1,0.0,0.2,0.4,0.4
+Haworth,roughness_relief,Death Valley,2,0.09942724391928101,0.2,0.4,0.4
+Haworth,roughness_relief,Pinacate,3,0.45322355878462733,0.2,0.4,0.4
+Haworth,roughness_relief,Meteor Crater,4,0.5877281534120824,0.2,0.4,0.4
+Haworth,roughness_relief,Atacama,5,1.0,0.2,0.4,0.4

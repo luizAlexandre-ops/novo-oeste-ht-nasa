@@ -1,0 +1,36 @@
+﻿lunar_target,scenario,earth_site,rank,composite_distance,weight_slope,weight_roughness,weight_relief
+Shackleton,balanced,Tolbachik,1,0.033796402872916464,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Shackleton,balanced,Death Valley,2,0.053672875984768345,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Shackleton,balanced,Pinacate,3,0.5436735596449892,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Shackleton,balanced,Meteor Crater,4,0.6632322747089885,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Shackleton,balanced,Atacama,5,1.0,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Shackleton,slope_focus,Death Valley,1,0.032203725590861015,0.6,0.2,0.2
+Shackleton,slope_focus,Tolbachik,2,0.06083352517124963,0.6,0.2,0.2
+Shackleton,slope_focus,Pinacate,3,0.6630429973754842,0.6,0.2,0.2
+Shackleton,slope_focus,Meteor Crater,4,0.7749195399628366,0.6,0.2,0.2
+Shackleton,slope_focus,Atacama,5,1.0,0.6,0.2,0.2
+Shackleton,roughness_focus,Tolbachik,1,0.02027784172374988,0.2,0.6,0.2
+Shackleton,roughness_focus,Death Valley,2,0.0416045918019494,0.2,0.6,0.2
+Shackleton,roughness_focus,Pinacate,3,0.3898690331805341,0.2,0.6,0.2
+Shackleton,roughness_focus,Meteor Crater,4,0.5245974351683935,0.2,0.6,0.2
+Shackleton,roughness_focus,Atacama,5,1.0,0.2,0.6,0.2
+Shackleton,relief_focus,Tolbachik,1,0.02027784172374988,0.2,0.2,0.6
+Shackleton,relief_focus,Death Valley,2,0.08721031056149464,0.2,0.2,0.6
+Shackleton,relief_focus,Pinacate,3,0.5781086483789493,0.2,0.2,0.6
+Shackleton,relief_focus,Meteor Crater,4,0.6901798489957356,0.2,0.2,0.6
+Shackleton,relief_focus,Atacama,5,1.0,0.2,0.2,0.6
+Shackleton,slope_roughness,Death Valley,1,0.036904158696405204,0.4,0.4,0.2
+Shackleton,slope_roughness,Tolbachik,2,0.04055568344749976,0.4,0.4,0.2
+Shackleton,slope_roughness,Pinacate,3,0.5264560152780092,0.4,0.4,0.2
+Shackleton,slope_roughness,Meteor Crater,4,0.6497584875656152,0.4,0.4,0.2
+Shackleton,slope_roughness,Atacama,5,1.0,0.4,0.4,0.2
+Shackleton,slope_relief,Tolbachik,1,0.04055568344749976,0.4,0.2,0.4
+Shackleton,slope_relief,Death Valley,2,0.05970701807617783,0.4,0.2,0.4
+Shackleton,slope_relief,Pinacate,3,0.6205758228772168,0.4,0.2,0.4
+Shackleton,slope_relief,Meteor Crater,4,0.7325496944792862,0.4,0.2,0.4
+Shackleton,slope_relief,Atacama,5,1.0,0.4,0.2,0.4
+Shackleton,roughness_relief,Tolbachik,1,0.02027784172374988,0.2,0.4,0.4
+Shackleton,roughness_relief,Death Valley,2,0.06440745118172203,0.2,0.4,0.4
+Shackleton,roughness_relief,Pinacate,3,0.48398884077974175,0.2,0.4,0.4
+Shackleton,roughness_relief,Meteor Crater,4,0.6073886420820647,0.2,0.4,0.4
+Shackleton,roughness_relief,Atacama,5,1.0,0.2,0.4,0.4

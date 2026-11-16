@@ -1,4 +1,4 @@
-"""Lunar Analog Explorer: interactive presentation of reproducible pipeline outputs."""
+"""SLOPE: Similarity of Lunar and Observed Planetary Elevation."""
 from __future__ import annotations
 
 import numpy as np
@@ -19,7 +19,7 @@ from dashboard.insights import (
 )
 
 st.set_page_config(
-    page_title='Lunar Analog Explorer | Novo Oeste',
+    page_title='SLOPE | Planetary Elevation Similarity',
     page_icon=':material/public:', layout='wide', initial_sidebar_state='expanded',
 )
 
@@ -152,9 +152,9 @@ def summary():
 
 
 st.markdown('''<div class="mission-masthead">
-  <div class="mission-kicker">NOVO OESTE / TERRAIN INTELLIGENCE</div>
-  <div class="mission-title">LUNAR ANALOG<br>EXPLORER<span style="color:#FC3D21">.</span></div>
-  <div class="mission-subtitle">Explore terrestrial terrain analogues for lunar south-polar exploration through reproducible topographic comparisons.</div>
+  <div class="mission-kicker">NOVO OESTE / PLANETARY TERRAIN ANALYSIS</div>
+  <div class="mission-title">SLOPE<span style="color:#FC3D21">.</span></div>
+  <div class="mission-subtitle"><strong>Similarity of Lunar and Observed Planetary Elevation</strong><br>Explore terrestrial terrain analogues for lunar south-polar exploration through reproducible topographic comparisons.</div>
   <div class="mission-meta">Independent hackathon research project · Using open planetary datasets</div>
 </div>''', unsafe_allow_html=True)
 

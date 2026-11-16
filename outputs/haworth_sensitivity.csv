@@ -1,0 +1,43 @@
+﻿lunar_target,scenario,earth_site,rank,composite_distance,weight_slope,weight_roughness,weight_relief
+Haworth,balanced,Tolbachik,1,0.0008643518204722122,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Haworth,balanced,Death Valley,2,0.09795089210553212,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Haworth,balanced,Haughton Crater,3,0.4713060908823071,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Haworth,balanced,Pinacate,4,0.5087552850366488,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Haworth,balanced,Meteor Crater,5,0.6437584026009204,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Haworth,balanced,Atacama,6,1.0,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Haworth,slope_focus,Tolbachik,1,0.0005186110922833273,0.6,0.2,0.2
+Haworth,slope_focus,Death Valley,2,0.09306518664042329,0.6,0.2,0.2
+Haworth,slope_focus,Haughton Crater,3,0.4916956372902808,0.6,0.2,0.2
+Haworth,slope_focus,Pinacate,4,0.6179774446902397,0.6,0.2,0.2
+Haworth,slope_focus,Meteor Crater,5,0.7543224691851087,0.6,0.2,0.2
+Haworth,slope_focus,Atacama,6,1.0,0.6,0.2,0.2
+Haworth,roughness_focus,Tolbachik,1,0.001555833276849982,0.2,0.6,0.2
+Haworth,roughness_focus,Death Valley,2,0.08701036944222018,0.2,0.6,0.2
+Haworth,roughness_focus,Haughton Crater,3,0.28278365452938425,0.2,0.6,0.2
+Haworth,roughness_focus,Pinacate,4,0.3511307268057617,0.2,0.6,0.2
+Haworth,roughness_focus,Meteor Crater,5,0.49845721288675787,0.2,0.6,0.2
+Haworth,roughness_focus,Atacama,6,1.0,0.2,0.6,0.2
+Haworth,relief_focus,Tolbachik,1,0.0005186110922833273,0.2,0.2,0.6
+Haworth,relief_focus,Death Valley,2,0.11377712023395288,0.2,0.2,0.6
+Haworth,relief_focus,Pinacate,3,0.557157683613945,0.2,0.2,0.6
+Haworth,relief_focus,Haughton Crater,4,0.6394389808272563,0.2,0.2,0.6
+Haworth,relief_focus,Meteor Crater,5,0.6784955257308947,0.2,0.2,0.6
+Haworth,relief_focus,Atacama,6,1.0,0.2,0.2,0.6
+Haworth,slope_roughness,Tolbachik,1,0.0010372221845666547,0.4,0.4,0.2
+Haworth,slope_roughness,Death Valley,2,0.09003777804132174,0.4,0.4,0.2
+Haworth,slope_roughness,Haughton Crater,3,0.38723964590983256,0.4,0.4,0.2
+Haworth,slope_roughness,Pinacate,4,0.48455408574800074,0.4,0.4,0.2
+Haworth,slope_roughness,Meteor Crater,5,0.6263898410359334,0.4,0.4,0.2
+Haworth,slope_roughness,Atacama,6,1.0,0.4,0.4,0.2
+Haworth,slope_relief,Tolbachik,1,0.0005186110922833273,0.4,0.2,0.4
+Haworth,slope_relief,Death Valley,2,0.10342115343718809,0.4,0.2,0.4
+Haworth,slope_relief,Haughton Crater,3,0.5655673090587685,0.4,0.2,0.4
+Haworth,slope_relief,Pinacate,4,0.5875675641520924,0.4,0.2,0.4
+Haworth,slope_relief,Meteor Crater,5,0.7164089974580018,0.4,0.2,0.4
+Haworth,slope_relief,Atacama,6,1.0,0.4,0.2,0.4
+Haworth,roughness_relief,Tolbachik,1,0.0010372221845666547,0.2,0.4,0.4
+Haworth,roughness_relief,Death Valley,2,0.10039374483808654,0.2,0.4,0.4
+Haworth,roughness_relief,Pinacate,3,0.4541442052098534,0.2,0.4,0.4
+Haworth,roughness_relief,Haughton Crater,4,0.46111131767832025,0.2,0.4,0.4
+Haworth,roughness_relief,Meteor Crater,5,0.5884763693088263,0.2,0.4,0.4
+Haworth,roughness_relief,Atacama,6,1.0,0.2,0.4,0.4

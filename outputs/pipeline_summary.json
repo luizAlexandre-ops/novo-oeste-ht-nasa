@@ -1,0 +1,360 @@
+{
+  "timestamp_utc": "2026-11-15T20:25:42.108379+00:00",
+  "method": "slope Wasserstein + log RMS ratio + log relief ratio; per-target candidate min-max normalization",
+  "caveats": [
+    "Ranking only compares specified target-centred terrain windows and candidate sites.",
+    "Normalized distances are not absolute similarity percentages.",
+    "Illumination/Diviner are contextual lunar layers, not Earth similarity terms.",
+    "Potential water/no-data and unusually flat terrain require independent source verification."
+  ],
+  "earth_failures": {},
+  "quality": [
+    {
+      "name": "Shackleton",
+      "pixel_size_m": 120.0,
+      "shape": [
+        335,
+        335
+      ],
+      "missing_fraction": 0.0,
+      "zero_fraction": 0.00026732011583871686,
+      "largest_zero_region_km2": 0.0144,
+      "near_median_fraction": 0.0003029627979505458,
+      "flags": []
+    },
+    {
+      "name": "Haworth",
+      "pixel_size_m": 120.0,
+      "shape": [
+        335,
+        335
+      ],
+      "missing_fraction": 0.0,
+      "zero_fraction": 5.3464023167743374e-05,
+      "largest_zero_region_km2": 0.0144,
+      "near_median_fraction": 0.0003386054800623747,
+      "flags": []
+    },
+    {
+      "name": "Atacama",
+      "pixel_size_m": 120.0,
+      "shape": [
+        335,
+        335
+      ],
+      "missing_fraction": 0.0,
+      "zero_fraction": 0.0,
+      "largest_zero_region_km2": 0.0,
+      "near_median_fraction": 0.7179327244375139,
+      "flags": [
+        "over_70_percent_near_median_check_real_flatness_or_interpolation"
+      ]
+    },
+    {
+      "name": "Haughton Crater",
+      "pixel_size_m": 120.0,
+      "shape": [
+        335,
+        335
+      ],
+      "missing_fraction": 0.0,
+      "zero_fraction": 0.022784584539986635,
+      "largest_zero_region_km2": 35.5104,
+      "near_median_fraction": 0.010532412564045444,
+      "flags": [
+        "over_1_percent_exact_zero_elevation_check_surface_or_nodata"
+      ]
+    },
+    {
+      "name": "Death Valley",
+      "pixel_size_m": 120.0,
+      "shape": [
+        335,
+        335
+      ],
+      "missing_fraction": 0.0,
+      "zero_fraction": 0.0,
+      "largest_zero_region_km2": 0.0,
+      "near_median_fraction": 0.0006326576074849633,
+      "flags": []
+    },
+    {
+      "name": "Pinacate",
+      "pixel_size_m": 120.0,
+      "shape": [
+        335,
+        335
+      ],
+      "missing_fraction": 0.0,
+      "zero_fraction": 0.0,
+      "largest_zero_region_km2": 0.0,
+      "near_median_fraction": 0.020503452884829583,
+      "flags": []
+    },
+    {
+      "name": "Tolbachik",
+      "pixel_size_m": 120.0,
+      "shape": [
+        335,
+        335
+      ],
+      "missing_fraction": 0.0,
+      "zero_fraction": 0.0,
+      "largest_zero_region_km2": 0.0,
+      "near_median_fraction": 0.0012564045444419692,
+      "flags": []
+    },
+    {
+      "name": "Meteor Crater",
+      "pixel_size_m": 120.0,
+      "shape": [
+        335,
+        335
+      ],
+      "missing_fraction": 0.0,
+      "zero_fraction": 0.0,
+      "largest_zero_region_km2": 0.0,
+      "near_median_fraction": 0.006638449543328135,
+      "flags": []
+    }
+  ],
+  "targets": {
+    "Shackleton": {
+      "winner": "Tolbachik",
+      "runner_up": "Death Valley",
+      "ranking": [
+        {
+          "lunar_target": "Shackleton",
+          "earth_site": "Tolbachik",
+          "slope_distance": 3.638271329917578,
+          "roughness_distance": 0.45617738925571694,
+          "relief_distance": 0.5070955220528386,
+          "roughness_distance_normalized": 0.0,
+          "relief_distance_normalized": 0.0,
+          "slope_distance_normalized": 0.1013892086187494,
+          "weight_slope": 0.3333333333333333,
+          "weight_roughness": 0.3333333333333333,
+          "weight_relief": 0.3333333333333333,
+          "composite_distance": 0.033796402872916464,
+          "rank": 1
+        },
+        {
+          "lunar_target": "Shackleton",
+          "earth_site": "Death Valley",
+          "slope_distance": 2.641443528625526,
+          "roughness_distance": 0.5648276845523452,
+          "relief_distance": 0.8051500962664071,
+          "roughness_distance_normalized": 0.023502165527720973,
+          "relief_distance_normalized": 0.13751646242658408,
+          "slope_distance_normalized": 0.0,
+          "weight_slope": 0.3333333333333333,
+          "weight_roughness": 0.3333333333333333,
+          "weight_relief": 0.3333333333333333,
+          "composite_distance": 0.053672875984768345,
+          "rank": 2
+        },
+        {
+          "lunar_target": "Shackleton",
+          "earth_site": "Haughton Crater",
+          "slope_distance": 8.974034306081519,
+          "roughness_distance": 0.5942883027069223,
+          "relief_distance": 2.439641443190561,
+          "roughness_distance_normalized": 0.02987479730499825,
+          "relief_distance_normalized": 0.89163831574468,
+          "slope_distance_normalized": 0.6440995792858543,
+          "weight_slope": 0.3333333333333333,
+          "weight_roughness": 0.3333333333333333,
+          "weight_relief": 0.3333333333333333,
+          "composite_distance": 0.5218708974451775,
+          "rank": 3
+        },
+        {
+          "lunar_target": "Shackleton",
+          "earth_site": "Pinacate",
+          "slope_distance": 10.920686121630656,
+          "roughness_distance": 1.1919829784979958,
+          "relief_distance": 1.8720465053424855,
+          "roughness_distance_normalized": 0.1591622434838514,
+          "relief_distance_normalized": 0.6297612814798895,
+          "slope_distance_normalized": 0.8420971539712266,
+          "weight_slope": 0.3333333333333333,
+          "weight_roughness": 0.3333333333333333,
+          "weight_relief": 0.3333333333333333,
+          "composite_distance": 0.5436735596449892,
+          "rank": 4
+        },
+        {
+          "lunar_target": "Shackleton",
+          "earth_site": "Meteor Crater",
+          "slope_distance": 11.907329026509242,
+          "roughness_distance": 1.920025127907331,
+          "relief_distance": 2.090607989221279,
+          "roughness_distance_normalized": 0.3166451758575009,
+          "relief_distance_normalized": 0.7306012104258561,
+          "slope_distance_normalized": 0.9424504378436087,
+          "weight_slope": 0.3333333333333333,
+          "weight_roughness": 0.3333333333333333,
+          "weight_relief": 0.3333333333333333,
+          "composite_distance": 0.6632322747089885,
+          "rank": 5
+        },
+        {
+          "lunar_target": "Shackleton",
+          "earth_site": "Atacama",
+          "slope_distance": 12.473138783693472,
+          "roughness_distance": 5.079168201250232,
+          "relief_distance": 2.674505655750038,
+          "roughness_distance_normalized": 1.0,
+          "relief_distance_normalized": 1.0,
+          "slope_distance_normalized": 1.0,
+          "weight_slope": 0.3333333333333333,
+          "weight_roughness": 0.3333333333333333,
+          "weight_relief": 0.3333333333333333,
+          "composite_distance": 1.0,
+          "rank": 6
+        }
+      ],
+      "sensitivity_winners": {
+        "balanced": "Tolbachik",
+        "slope_focus": "Death Valley",
+        "roughness_focus": "Tolbachik",
+        "relief_focus": "Tolbachik",
+        "slope_roughness": "Death Valley",
+        "slope_relief": "Tolbachik",
+        "roughness_relief": "Tolbachik"
+      },
+      "win_counts": {
+        "Tolbachik": 5,
+        "Death Valley": 2
+      },
+      "without_haughton_winner": "Tolbachik",
+      "without_haughton_sensitivity_winners": {
+        "balanced": "Tolbachik",
+        "slope_focus": "Death Valley",
+        "roughness_focus": "Tolbachik",
+        "relief_focus": "Tolbachik",
+        "slope_roughness": "Death Valley",
+        "slope_relief": "Tolbachik",
+        "roughness_relief": "Tolbachik"
+      }
+    },
+    "Haworth": {
+      "winner": "Tolbachik",
+      "runner_up": "Death Valley",
+      "ranking": [
+        {
+          "lunar_target": "Haworth",
+          "earth_site": "Tolbachik",
+          "slope_distance": 3.767609712630871,
+          "roughness_distance": 0.4151146666742437,
+          "relief_distance": 0.5230336648621978,
+          "roughness_distance_normalized": 0.0025930554614166366,
+          "relief_distance_normalized": 0.0,
+          "slope_distance_normalized": 0.0,
+          "weight_slope": 0.3333333333333333,
+          "weight_roughness": 0.3333333333333333,
+          "weight_relief": 0.3333333333333333,
+          "composite_distance": 0.0008643518204722122,
+          "rank": 1
+        },
+        {
+          "lunar_target": "Haworth",
+          "earth_site": "Death Valley",
+          "slope_distance": 4.375272889284913,
+          "roughness_distance": 0.7137164443691726,
+          "relief_distance": 0.8210882390757662,
+          "roughness_distance_normalized": 0.07059958544725228,
+          "relief_distance_normalized": 0.13751646242658402,
+          "slope_distance_normalized": 0.08573662844276006,
+          "weight_slope": 0.3333333333333333,
+          "weight_roughness": 0.3333333333333333,
+          "weight_relief": 0.3333333333333333,
+          "composite_distance": 0.09795089210553212,
+          "rank": 2
+        },
+        {
+          "lunar_target": "Haworth",
+          "earth_site": "Haughton Crater",
+          "slope_distance": 7.46929828469592,
+          "roughness_distance": 0.40372912810020056,
+          "relief_distance": 2.4555795859999203,
+          "roughness_distance_normalized": 0.0,
+          "relief_distance_normalized": 0.89163831574468,
+          "slope_distance_normalized": 0.5222799569022414,
+          "weight_slope": 0.3333333333333333,
+          "weight_roughness": 0.3333333333333333,
+          "weight_relief": 0.3333333333333333,
+          "composite_distance": 0.4713060908823071,
+          "rank": 3
+        },
+        {
+          "lunar_target": "Haworth",
+          "earth_site": "Pinacate",
+          "slope_distance": 9.308736912452666,
+          "roughness_distance": 0.907324875309547,
+          "relief_distance": 1.8879846481518445,
+          "roughness_distance_normalized": 0.11469388945943088,
+          "relief_distance_normalized": 0.6297612814798894,
+          "slope_distance_normalized": 0.7818106841706262,
+          "weight_slope": 0.3333333333333333,
+          "weight_roughness": 0.3333333333333333,
+          "weight_relief": 0.3333333333333333,
+          "composite_distance": 0.5087552850366488,
+          "rank": 4
+        },
+        {
+          "lunar_target": "Haworth",
+          "earth_site": "Meteor Crater",
+          "slope_distance": 10.289356204054355,
+          "roughness_distance": 1.635367024718882,
+          "relief_distance": 2.106546132030638,
+          "roughness_distance_normalized": 0.280505428315514,
+          "relief_distance_normalized": 0.7306012104258559,
+          "slope_distance_normalized": 0.9201685690613913,
+          "weight_slope": 0.3333333333333333,
+          "weight_roughness": 0.3333333333333333,
+          "weight_relief": 0.3333333333333333,
+          "composite_distance": 0.6437584026009204,
+          "rank": 5
+        },
+        {
+          "lunar_target": "Haworth",
+          "earth_site": "Atacama",
+          "slope_distance": 10.855165961238587,
+          "roughness_distance": 4.794510098061783,
+          "relief_distance": 2.6904437985593974,
+          "roughness_distance_normalized": 1.0,
+          "relief_distance_normalized": 1.0,
+          "slope_distance_normalized": 1.0,
+          "weight_slope": 0.3333333333333333,
+          "weight_roughness": 0.3333333333333333,
+          "weight_relief": 0.3333333333333333,
+          "composite_distance": 1.0,
+          "rank": 6
+        }
+      ],
+      "sensitivity_winners": {
+        "balanced": "Tolbachik",
+        "slope_focus": "Tolbachik",
+        "roughness_focus": "Tolbachik",
+        "relief_focus": "Tolbachik",
+        "slope_roughness": "Tolbachik",
+        "slope_relief": "Tolbachik",
+        "roughness_relief": "Tolbachik"
+      },
+      "win_counts": {
+        "Tolbachik": 7
+      },
+      "without_haughton_winner": "Tolbachik",
+      "without_haughton_sensitivity_winners": {
+        "balanced": "Tolbachik",
+        "slope_focus": "Tolbachik",
+        "roughness_focus": "Tolbachik",
+        "relief_focus": "Tolbachik",
+        "slope_roughness": "Tolbachik",
+        "slope_relief": "Tolbachik",
+        "roughness_relief": "Tolbachik"
+      }
+    }
+  }
+}
